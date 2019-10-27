@@ -7,10 +7,17 @@ import {Component, OnInit} from '@angular/core';
 })
 export class NavigationBarComponent implements OnInit {
 
+  public isNavOpen = false;
+
   constructor() {
   }
 
   ngOnInit() {
   }
 
+
+
+  public onToggleNavCollapse() {
+
+  }
 }
