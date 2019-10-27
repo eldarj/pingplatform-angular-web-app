@@ -3,18 +3,19 @@ import {NgModule} from '@angular/core';
 
 import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
-import {NavigationBarComponent} from './shared/components/navigation-bar/navigation-bar.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import {SharedComponentsModule} from './shared/components/shared-components.module';
+import {MaterialModule} from './shared/modules/material/material.module';
 
 @NgModule({
   declarations: [
     AppComponent,
-    NavigationBarComponent,
   ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
+    SharedComponentsModule,
   ],
   providers: [],
   bootstrap: [AppComponent]
