@@ -1,0 +1,30 @@
+<div id="main-header-nav" className="bg-white position-relative box-shadow z-index-1">
+    <nav className="navbar navbar-expand-lg navbar-light bg-white container">
+      <BrandLogo />
+      <span className="fas fa-bars d-md-none"  onClick={this.onToggleNavCollapse} />
+      <div className={"navbar-collapse offcanvas-collapse " + (this.state.navOpen ? 'open' : '')}
+        id="navbarOffcanvas">
+        <div className="d-md-none navbar navbar-light">
+          <BrandLogo />
+          <i className="fas fa-times"  onClick={this.onToggleNavCollapse} />
+        </div>
+        {this.renderNavLinks(this.state.isLogged)}
+      </div>
+    </nav>
+    <div className="nav-scroller bg-white container">
+      <nav className="nav nav-underline">
+        <a className="nav-link active pl-0" href="/">Dashboard</a>
+        <a className="nav-link" href="/">
+          Friends
+          <span className="badge badge-pill bg-light align-text-bottom">27</span>
+        </a>
+        <a className="nav-link" href="/">Explore</a>
+        <a className="nav-link" href="/">Suggestions</a>
+        <a className="nav-link" href="/">Link</a>
+        <a className="nav-link" href="/">Link</a>
+        <a className="nav-link" href="/">Link</a>
+        <a className="nav-link" href="/">Link</a>
+        <a className="nav-link" href="/">Link</a>
+      </nav>
+    </div>
+  </div>
