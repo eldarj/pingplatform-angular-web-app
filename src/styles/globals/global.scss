@@ -1,0 +1,40 @@
+// STYLING MATERIAL COMPONENTS
+.mat-spinner-sm {
+  &.mat-progress-spinner {
+    max-height: 25px;
+    max-width: 25px;
+  }
+
+  svg {
+    max-height: 25px;
+    max-width: 25px;
+  }
+}
+
+.input-holder {
+  margin: 5px 0;
+}
+.form-group {
+  .mat-form-field-wrapper {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+// component like ->
+
+hr {
+  display: block;
+  border: none;
+
+  margin-top: 15px;
+  margin-bottom: 15px;
+
+  &.shadow-hr {
+    border-top: 1px solid rgba(0, 0, 0, 0.1);
+  }
+  &.lg {
+    margin-top: 35px;
+    margin-bottom: 35px;
+  }
+}

@@ -1,1 +1,93 @@
-<p>register works!</p>
+<div class="login-form box-shadow-sm mt-50 p-25">
+  <div>
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+      <div class="d-flex justify-content-space-between align-items-center">
+        <span>Create an account</span>
+        <mat-spinner class="mat-spinner-sm"
+                     *ngIf="formLoading"></mat-spinner>
+      </div>
+
+      <div class="form-group">
+        <div class="input-holder p-relative">
+          <mat-form-field appearance="outline" >
+            <mat-label>Calling code</mat-label>
+            <mat-select formControlName="callingCode" [attr.disabled]="formLoading">
+              <mat-option *ngFor="let code of callingCodes" [value]="code.callingCountryCode">
+                (+{{code.callingCountryCode}}) {{code.isoCode}} - {{code.countryName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div *ngIf="f.callingCode.errors">
+          <div *ngIf="f.callingCode.errors.required">Calling code is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Phone number</mat-label>
+          <input matInput placeholder="62 005 152" formControlName="phoneNumber">
+        </mat-form-field>
+        <div *ngIf="f.phoneNumber.errors">
+          <div *ngIf="f.phoneNumber.errors.required">Phonenumber is required</div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <div class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="eldar.jahijagic@ping.me" formControlName="email">
+        </mat-form-field>
+        <div *ngIf="f.email.errors">
+          <div *ngIf="f.email.errors.required">Email is required</div>
+          <div *ngIf="f.email.errors.email">Please enter a valid email</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>First name</mat-label>
+          <input matInput placeholder="Eldar" formControlName="firstname">
+        </mat-form-field>
+        <div *ngIf="f.firstname.errors">
+          <div *ngIf="f.firstname.errors.required">First name is required</div>
+        </div>
+      </div>
+
+      <div class="form-group">
+        <mat-form-field appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input matInput placeholder="Jahijagic" formControlName="lastname">
+        </mat-form-field>
+        <div *ngIf="f.lastname.errors">
+          <div *ngIf="f.lastname.errors.required">Last name is required</div>
+        </div>
+      </div>
+
+      <hr/>
+
+      <div class="form-group">
+        <mat-checkbox>Stay logged in</mat-checkbox>
+      </div>
+
+      <hr class="shadow-hr"/>
+
+      <div class="form-group d-flex justify-content-space-between">
+        <button mat-stroked-button>
+          <div class="d-flex align-items-center justify-content-center">
+            <mat-spinner class="mat-spinner-sm mr-10" *ngIf="submitLoading"></mat-spinner>
+            <span>Go</span>
+          </div>
+        </button>
+        <div class="d-flex align-items-center">
+          <span class="sm mr-5"><i>...or</i></span>
+          <a mat-button routerLink="/get-started">Login</a>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>

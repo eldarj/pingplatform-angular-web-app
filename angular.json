@@ -27,7 +27,11 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.scss"
+              "src/styles.scss",
+              "src/styles/utils/layout-utils.scss",
+              "src/styles/utils/design-utils.scss",
+              "src/styles/utils/margins-utils.scss",
+              "src/styles/globals/global.scss"
             ],
             "scripts": []
           },

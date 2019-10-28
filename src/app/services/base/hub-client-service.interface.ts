@@ -1,11 +1,11 @@
 import {OnDestroy} from '@angular/core';
 
-export declare interface HubClientServiceInterface extends OnDestroy {
-  connect(): void;
+export declare interface HubClientServiceInterface {
+  doHubClientConnect(): void;
 
-  onConnected(): void;
+  doRegisterHubClientHandlers(): void;
 
-  registerHandlers(): void;
+  onHubClientConnected(): void;
 
-  onError(error: any): void;
+  onHubClientError(error: any): void;
 }

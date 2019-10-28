@@ -1,6 +1,8 @@
 import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {HubClientServiceInterface} from './hub-client-service.interface';
+import {OnDestroy} from '@angular/core';
 
-export class BaseHubClientService {
+export class BaseHubClientService implements HubClientServiceInterface, OnDestroy {
   private hubConnection: HubConnection;
 
   get hubClient() {
@@ -8,28 +10,32 @@ export class BaseHubClientService {
   }
 
   constructor(private hubEndpoint: string) {
-    this.connect();
-    this.registerHandlers();
+    this.doHubClientConnect();
+    this.doRegisterHubClientHandlers();
   }
 
-  connect() {
+  doHubClientConnect() {
     this.hubConnection = new HubConnectionBuilder()
       .withUrl('https://localhost:44380/' + this.hubEndpoint)
       .build();
 
     this.hubConnection
       .start()
-      .then(() => this.onConnected())
-      .catch(error => this.onError(error));
+      .then(() => this.onHubClientConnected())
+      .catch(error => this.onHubClientError(error));
   }
 
-  onConnected() {
+  doRegisterHubClientHandlers() {
   }
 
-  onError(error: any) {
+  onHubClientConnected() {
+  }
+
+  onHubClientError(error: any) {
     console.log('Cant connect to server.', error);
   }
 
-  registerHandlers() {
+  ngOnDestroy(): void {
+    this.hubConnection.stop();
   }
 }

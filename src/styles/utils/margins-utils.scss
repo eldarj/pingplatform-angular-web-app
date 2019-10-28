@@ -1,0 +1,33 @@
+// MARGINS
+.mt-5 { margin-top: 5px; } .mb-5 { margin-bottom: 5px; } .mr-5 { margin-right: 5px; } .ml-5 { margin-left: 5px; }
+.mt-10 { margin-top: 10px; } .mb-10 { margin-bottom: 10px; } .mr-10 { margin-right: 10px; } .ml-10 { margin-left: 10px; }
+
+.mt-20 {
+  margin-top: 20px;
+}
+
+.mt-30 {
+  margin-top: 30px;
+}
+
+.mt-40 {
+  margin-top: 40px;
+}
+
+.mt-50 {
+  margin-top: 50px;
+}
+
+
+// PADDING
+.p-25 {
+  padding: 25px;
+}
+
+
+// typography -->
+span {
+  &.sm {
+    font-size: 13px;
+  }
+}
