@@ -1,1 +1,26 @@
-<p>welcome {{username}} profile-page works!</p>
+<div>
+  <div class="cover-img-container">
+    <div class="cover-img"
+         [ngStyle]="avatarStyles">
+      <mat-spinner *ngIf="loadingCover" class="cover-img-loader"></mat-spinner>
+    </div>
+  </div>
+  <div class="cover-img-container">
+    <div class="cover-img"
+         [ngStyle]="coverStyles">
+      <mat-spinner *ngIf="loadingCover" class="cover-img-loader"></mat-spinner>
+    </div>
+  </div>
+  <h2>
+    <i class="fas fa-sync-alt"></i>
+    {{account.firstname}} {{account.lastname}}
+  </h2>
+  <div>
+    <kbd>{{account.email}}</kbd><br/>
+    <kbd>{{account.phoneNumber}}</kbd>
+  </div>
+  <hr class="shadow-hr"/>
+  <p>
+    Date joined {{dateRegisteredHuman}}
+  </p>
+</div>

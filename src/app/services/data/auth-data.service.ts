@@ -2,11 +2,12 @@ import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {BaseHubClientService} from '../base/base-hub-client.service';
 import {CallingCodeModel} from '../../shared/models/data/calling-code.model';
+import {UserPersistanceService} from '../persistance/user-persistance.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService extends BaseHubClientService {
+export class AuthDataService extends BaseHubClientService {
   private static HUB_ENDPOINT = 'authhub';
 
   public callingCodes = []; // use this on-pre initialize and on nav-changes
@@ -18,8 +19,8 @@ export class AuthService extends BaseHubClientService {
   public preloadedCallingCountryCode: number;
   public preloadedPhoneNumber: string;
 
-  constructor() {
-    super(AuthService.HUB_ENDPOINT);
+  constructor(private userPersistanceService: UserPersistanceService) {
+    super(AuthDataService.HUB_ENDPOINT);
   }
 
   private static onError(error: any) {
@@ -33,12 +34,14 @@ export class AuthService extends BaseHubClientService {
     });
     super.hubClient.on('AuthenticationDone124', result => {
       this.loggedInUser$.next(result);
+      this.userPersistanceService.setSession(result.content.token);
     });
     super.hubClient.on('AuthenticationFailed124', result => {
       this.loggedInUser$.next(result);
     });
     super.hubClient.on('RegistrationDone124', result => {
       this.loggedInUser$.next(result);
+      this.userPersistanceService.setSession(result.content.token);
     });
     super.hubClient.on('RegistrationFailed124', result => {
       this.loggedInUser$.next(result);
@@ -54,20 +57,20 @@ export class AuthService extends BaseHubClientService {
         firstname,
         lastname
       })
-      .catch(AuthService.onError);
+      .catch(AuthDataService.onError);
   }
 
   login(phoneNumber: string, callingCountryCode: number): void {
     setTimeout(() => {
       super.hubClient
         .invoke('RequestAuthentication', '124', {phoneNumber, callingCountryCode})
-        .catch(AuthService.onError);
+        .catch(AuthDataService.onError);
     }, 1000);
   }
 
   onHubClientConnected(): void {
     super.hubClient
       .invoke('RequestCallingCodes', '124')
-      .catch(AuthService.onError);
+      .catch(AuthDataService.onError);
   }
 }

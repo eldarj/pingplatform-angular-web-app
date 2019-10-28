@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {CallingCode} from '../../../shared/models/calling-code.model';
-import {AuthService} from '../../../services/auth/auth.service';
+import {AuthDataService} from '../../../services/data/auth-data.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
-import {ResponseModel} from '../../../shared/models/response.model';
-import {AccountModel} from '../../../shared/models/account-model';
+import {CallingCodeModel} from '../../../shared/models/data/calling-code.model';
+import {AccountModel} from '../../../shared/models/data/account-model';
+import {ResponseModel} from '../../../shared/models/wrappers/response.model';
 
 @Component({
   selector: 'app-register',
@@ -16,7 +16,7 @@ export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
   submitted = false;
 
-  callingCodes: Array<CallingCode> = [];
+  callingCodes: Array<CallingCodeModel> = [];
 
   formLoading = true;
   submitLoading = false;
@@ -27,7 +27,7 @@ export class RegisterComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: AuthDataService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {

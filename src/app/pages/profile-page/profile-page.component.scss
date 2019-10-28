@@ -1,0 +1,22 @@
+.cover-img-container {
+  height: 200px;
+  width: 200px;
+
+  .cover-img {
+    position: relative;
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .mat-progress-spinner,
+    .mat-progress-spinner > ::ng-deep svg{
+      width: 50px !important;
+      height: 50px !important;
+    }
+  }
+}
+

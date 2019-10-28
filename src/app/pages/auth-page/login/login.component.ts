@@ -1,11 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthService} from '../../../services/auth/auth.service';
-import {CallingCode} from '../../../shared/models/calling-code.model';
+import {AuthDataService} from '../../../services/data/auth-data.service';
 import {Router} from '@angular/router';
-import {AccountModel} from '../../../shared/models/account-model';
-import {ResponseModel} from '../../../shared/models/response.model';
 import {MatSnackBar} from '@angular/material';
+import {ResponseModel} from '../../../shared/models/wrappers/response.model';
+import {AccountModel} from '../../../shared/models/data/account-model';
+import {CallingCodeModel} from '../../../shared/models/data/calling-code.model';
 
 @Component({
   selector: 'app-login',
@@ -16,7 +16,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   submitted = false;
 
-  callingCodes: Array<CallingCode> = [];
+  callingCodes: Array<CallingCodeModel> = [];
 
   formLoading = true;
   submitLoading = false;
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthService,
+    private authService: AuthDataService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {
@@ -51,9 +51,10 @@ export class LoginComponent implements OnInit {
 
     this.authService.loggedInUser$.subscribe((result: ResponseModel<AccountModel>) => {
       if (result.messageCode !== '401') {
+        this.openSnackBar(result.message);
+
         const username = result.content.firstname + '-' + result.content.lastname;
         this.router.navigate(['/profile', username]);
-        this.openSnackBar(result.message);
       } else {
         this.openSnackBar(result.message);
 

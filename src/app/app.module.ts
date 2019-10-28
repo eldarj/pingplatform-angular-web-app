@@ -5,7 +5,7 @@ import {AppRoutingModule} from './app-routing.module';
 import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SharedComponentsModule} from './shared/components/shared-components.module';
-import {MaterialModule} from './shared/modules/material/material.module';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -17,7 +17,7 @@ import {MaterialModule} from './shared/modules/material/material.module';
     AppRoutingModule,
     SharedComponentsModule
   ],
-  providers: [],
+  providers: [CookieService],
   bootstrap: [AppComponent]
 })
 export class AppModule {
