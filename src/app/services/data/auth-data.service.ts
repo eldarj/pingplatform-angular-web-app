@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
 import {BaseHubClientService} from '../base/base-hub-client.service';
-import {CallingCode} from '../../shared/models/calling-code.model';
-import {AccountModel} from '../../shared/models/account-model';
+import {CallingCodeModel} from '../../shared/models/data/calling-code.model';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +10,7 @@ export class AuthService extends BaseHubClientService {
   private static HUB_ENDPOINT = 'authhub';
 
   public callingCodes = []; // use this on-pre initialize and on nav-changes
-  public callingCode$ = new Subject<Array<CallingCode>>();
+  public callingCode$ = new Subject<Array<CallingCodeModel>>();
 
   public loggedInUser$ = new Subject<any>();
 
@@ -46,33 +45,22 @@ export class AuthService extends BaseHubClientService {
     });
   }
 
-  register(
-    phoneNumber: string,
-    callingCountryCode: number,
-    email: string,
-    firstname: string,
-    lastname: string
-  ): void {
-    const accountRequest = new AccountModel();
-    accountRequest.phoneNumber = phoneNumber;
-    accountRequest.callingCountryCode = callingCountryCode;
-    accountRequest.email = email;
-    accountRequest.firstname = firstname;
-    accountRequest.lastname = lastname;
-
+  register(phoneNumber: string, callingCountryCode: number, email: string, firstname: string, lastname: string): void {
     super.hubClient
-      .invoke('RequestRegistration', '124', accountRequest)
+      .invoke('RequestRegistration', '124', {
+        phoneNumber,
+        callingCountryCode,
+        email,
+        firstname,
+        lastname
+      })
       .catch(AuthService.onError);
   }
 
   login(phoneNumber: string, callingCountryCode: number): void {
-    const accountRequest = new AccountModel();
-    accountRequest.phoneNumber = phoneNumber;
-    accountRequest.callingCountryCode = callingCountryCode;
-
     setTimeout(() => {
       super.hubClient
-        .invoke('RequestAuthentication', '124', accountRequest)
+        .invoke('RequestAuthentication', '124', {phoneNumber, callingCountryCode})
         .catch(AuthService.onError);
     }, 1000);
   }
