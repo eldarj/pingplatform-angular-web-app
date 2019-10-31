@@ -13,7 +13,7 @@ export class AccountModel {
   public contacts: any;
 
   constructor() {
-  }l
+  }
 
   public username() {
     return this.firstname + '-' + this.lastname;

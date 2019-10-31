@@ -1,4 +1,4 @@
-import {HubConnection, HubConnectionBuilder} from '@microsoft/signalr';
+import {HubConnection, HubConnectionBuilder, IHttpConnectionOptions} from '@microsoft/signalr';
 import {HubClientServiceInterface} from './hub-client-service.interface';
 import {OnDestroy} from '@angular/core';
 
@@ -9,14 +9,17 @@ export class BaseHubClientService implements HubClientServiceInterface, OnDestro
     return this.hubConnection;
   }
 
-  constructor(private hubEndpoint: string) {
-    this.doHubClientConnect();
+  constructor(private hubEndpoint: string, private accessToken: string = '') {
+    const httpConnectionOptions: IHttpConnectionOptions = !!accessToken ?
+      {accessTokenFactory: () => accessToken} : {};
+
+    this.doHubClientConnect(httpConnectionOptions);
     this.doRegisterHubClientHandlers();
   }
 
-  doHubClientConnect() {
+  doHubClientConnect(httpConnectionOptions: IHttpConnectionOptions) {
     this.hubConnection = new HubConnectionBuilder()
-      .withUrl('https://localhost:44380/' + this.hubEndpoint)
+      .withUrl('https://localhost:44380/' + this.hubEndpoint, httpConnectionOptions)
       .build();
 
     this.hubConnection

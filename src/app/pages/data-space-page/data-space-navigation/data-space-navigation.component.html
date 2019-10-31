@@ -1,0 +1,52 @@
+<mat-toolbar class="sm pt-10 pb-10 d-flex flex-row justify-content-space-between">
+  <div>
+    <mat-toolbar-row>
+      <button mat-button class="mat-btn-icon" [matMenuTriggerFor]="menu">
+        <mat-icon>keyboard_arrow_down</mat-icon>New
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+      <button mat-button class="mat-btn-icon" [matMenuTriggerFor]="menu">
+        <mat-icon>cloud_upload</mat-icon>Upload
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+      <button mat-button class="mat-btn-icon" [matMenuTriggerFor]="menu">
+        <mat-icon>share</mat-icon>Share
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+      <button mat-button class="mat-btn-icon" [matMenuTriggerFor]="menu">
+        <mat-icon>cloud_download</mat-icon>Download
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+
+      <button mat-button class="mat-btn-more" [matMenuTriggerFor]="menu">
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item>Item 1</button>
+        <button mat-menu-item>Item 2</button>
+      </mat-menu>
+    </mat-toolbar-row>
+  </div>
+
+  <div class="data-space-search">
+    <mat-icon>search</mat-icon>
+    <mat-form-field class="data-space-search-input">
+      <input matInput placeholder="Search...">
+    </mat-form-field>
+  </div>
+</mat-toolbar>

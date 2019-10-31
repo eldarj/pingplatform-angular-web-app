@@ -4,7 +4,7 @@ import {AuthDataService} from '../../../services/data/auth-data.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import {CallingCodeModel} from '../../../shared/models/data/calling-code.model';
-import {AccountModel} from '../../../shared/models/data/account-model';
+import {AccountModel} from '../../../shared/models/data/account.model';
 import {ResponseModel} from '../../../shared/models/wrappers/response.model';
 
 @Component({

@@ -11,7 +11,7 @@ export class AuthDataService extends BaseHubClientService {
   private static HUB_ENDPOINT = 'authhub';
 
   public callingCodes = []; // use this on-pre initialize and on nav-changes
-  public callingCode$ = new Subject<Array<CallingCodeModel>>();
+  public callingCode$ = new Subject<CallingCodeModel[]>();
 
   public loggedInUser$ = new Subject<any>();
 
@@ -34,14 +34,14 @@ export class AuthDataService extends BaseHubClientService {
     });
     super.hubClient.on('AuthenticationDone124', result => {
       this.loggedInUser$.next(result);
-      this.userPersistanceService.setSession(result.content.token);
+      this.userPersistanceService.setSessionToken(result.content.token);
     });
     super.hubClient.on('AuthenticationFailed124', result => {
       this.loggedInUser$.next(result);
     });
     super.hubClient.on('RegistrationDone124', result => {
       this.loggedInUser$.next(result);
-      this.userPersistanceService.setSession(result.content.token);
+      this.userPersistanceService.setSessionToken(result.content.token);
     });
     super.hubClient.on('RegistrationFailed124', result => {
       this.loggedInUser$.next(result);

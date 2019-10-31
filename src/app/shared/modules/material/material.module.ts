@@ -5,8 +5,8 @@ import {
   MatCheckboxModule, MatDividerModule,
   MatFormFieldModule,
   MatIconModule,
-  MatInputModule,
-  MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule,
+  MatInputModule, MatMenuModule, MatPaginatorModule,
+  MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule, MatSortModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 
@@ -23,7 +23,11 @@ import {
     MatButtonModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatDividerModule
+    MatDividerModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatTableModule,
+    MatSortModule,
   ],
   exports: [
     MatToolbarModule,
@@ -35,7 +39,10 @@ import {
     MatButtonModule,
     MatSelectModule,
     MatSnackBarModule,
-    MatDividerModule
+    MatDividerModule,
+    MatMenuModule,
+    MatPaginatorModule,
+    MatTableModule,
   ]
 })
 export class MaterialModule {

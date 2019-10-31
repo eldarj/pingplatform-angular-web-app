@@ -21,6 +21,31 @@
   }
 }
 
+.mat-btn-icon {
+  &.mat-button {
+    padding-left: 10px;
+    .mat-button-wrapper {
+      display: flex;
+      align-items: center;
+      .mat-icon {
+        margin-right: 2.5px;
+      }
+    }
+  }
+}
+.mat-btn-more {
+  min-width: 40px !important;
+  padding: 0 !important;
+}
+.sm {
+  &.mat-toolbar {
+    min-height: auto;
+    .mat-toolbar-row {
+      height: auto;
+    }
+  }
+}
+
 // component like ->
 
 hr {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AccountModel} from '../../shared/models/data/account-model';
+import {AccountModel} from '../../shared/models/data/account.model';
 import {DateTimeUtils} from '../../utils/date-time.utils';
 
 @Component({

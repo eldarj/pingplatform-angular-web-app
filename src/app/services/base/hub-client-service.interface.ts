@@ -1,7 +1,7 @@
-import {OnDestroy} from '@angular/core';
+import {IHttpConnectionOptions} from '@microsoft/signalr';
 
 export declare interface HubClientServiceInterface {
-  doHubClientConnect(): void;
+  doHubClientConnect(httpConnectionOptions: IHttpConnectionOptions): void;
 
   doRegisterHubClientHandlers(): void;
 
