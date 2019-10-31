@@ -16,6 +16,8 @@ export class DataSpaceNodeModel {
 
   public nodes: DataSpaceNodeModel[];
 
+  public ownerName: string;
+
   constructor() {
   }
 }

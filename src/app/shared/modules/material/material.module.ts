@@ -6,12 +6,13 @@ import {
   MatFormFieldModule,
   MatIconModule,
   MatInputModule, MatMenuModule, MatPaginatorModule,
-  MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule, MatSortModule, MatTableModule,
+  MatProgressSpinnerModule, MatSelectModule, MatSnackBarModule, MatSort, MatSortModule, MatTableModule,
   MatToolbarModule
 } from '@angular/material';
 
 @NgModule({
-  declarations: [],
+  declarations: [
+  ],
   imports: [
     CommonModule,
     MatToolbarModule,
