@@ -43,7 +43,6 @@ export class LoginComponent implements OnInit {
       callingCode: ['', Validators.required]
     });
 
-
     if (this.authService.callingCodes && this.authService.callingCodes.length > 0) {
       this.callingCodes = this.authService.callingCodes;
       this.formLoading = false;

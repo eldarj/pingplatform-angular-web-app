@@ -9,6 +9,12 @@
 // Be sure that you only ever include this mixin once!
 @include mat-core();
 
+$custom-typography: mat-typography-config(
+  $font-family: 'Lato, Open Sans, "Helvetica Neue", sans-serif',
+  $headline: mat-typography-level(32px, 48px, 700),
+  $body-1: mat-typography-level(16px, 24px, 500)
+);
+@include angular-material-typography($custom-typography);
 // Define the palettes for your theme using the Material Design palettes available in palette.scss
 // (imported above). For each palette, you can optionally specify a default, lighter, and darker
 // hue. Available color palettes: https://material.io/design/color/
@@ -29,4 +35,4 @@ $ping-chat-theme: mat-light-theme($ping-chat-primary, $ping-chat-accent, $ping-c
 /* You can add global styles to this file, and also import other style files */
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0; font-family: OpenSans, "Helvetica Neue", sans-serif; }

@@ -1,10 +1,11 @@
-import {Component, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DataSpaceDataService} from '../../services/data/data-space-data.service';
 import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
 import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
 import {DateTimeUtils} from '../../utils/date-time.utils';
+import {Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-data-space-page',
@@ -15,7 +16,19 @@ export class DataSpacePageComponent {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  public displayedColumns: string[] = ['select', 'icon', 'name', 'private', 'creationTime', 'lastModifiedTime', 'mimeType', 'ownerName', 'more'];
+  fileMetaData$: Subscription;
+
+  public displayedColumns: string[] = [
+    'select',
+    'icon',
+    'name',
+    'private',
+    'creationTime',
+    'lastModifiedTime',
+    'mimeType',
+    'ownerName',
+    'more'
+  ];
 
   public dataSource = new MatTableDataSource<DataSpaceNodeModel>();
   public selection = new SelectionModel<DataSpaceNodeModel>(true, []);
@@ -36,7 +49,7 @@ export class DataSpacePageComponent {
   }
 
   public searchFilter(searchValue: string) {
-    console.log(searchValue);
+    this.dataSource.filter = searchValue.trim().toLowerCase();
   }
 
   public isAllSelected() {

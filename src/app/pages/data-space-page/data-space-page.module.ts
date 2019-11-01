@@ -4,6 +4,8 @@ import {DataSpacePageComponent} from './data-space-page.component';
 import {RouterModule, Routes} from '@angular/router';
 import {MaterialModule} from '../../shared/modules/material/material.module';
 import {DataSpaceNavigationComponent} from './data-space-navigation/data-space-navigation.component';
+import { NewDirectoryComponent } from './dialogs/new-directory/new-directory.component';
+import {CommonSharedModule} from '../../shared/modules/common/common-shared.module';
 
 const routes: Routes = [
   {path: ':username', component: DataSpacePageComponent}
@@ -12,12 +14,14 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DataSpacePageComponent,
-    DataSpaceNavigationComponent
+    DataSpaceNavigationComponent,
+    NewDirectoryComponent
   ],
   imports: [
     CommonModule,
     RouterModule.forChild(routes),
-    MaterialModule
+    MaterialModule,
+    CommonSharedModule
   ],
   exports: [
     RouterModule

@@ -7,7 +7,7 @@ export class DataSpaceNodeModel {
   public ownerLastname: string;
 
   public fileSizeInKB: number;
-  public private: boolean;
+  public private: boolean | string;
   public nodeType: string;
   public mimeType: string;
 
