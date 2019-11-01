@@ -3,7 +3,8 @@ import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DataSpaceDataService} from '../../services/data/data-space-data.service';
 import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
-import {FileUtils} from '../../utils/file.utils';
+import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
+import {DateTimeUtils} from '../../utils/date-time.utils';
 
 @Component({
   selector: 'app-data-space-page',
@@ -14,7 +15,7 @@ export class DataSpacePageComponent {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
 
-  public displayedColumns: string[] = ['select', 'name', 'private', 'mimeType', 'creationTime', 'lastModifiedTime', 'ownerName'];
+  public displayedColumns: string[] = ['select', 'icon', 'name', 'private', 'creationTime', 'lastModifiedTime', 'mimeType', 'ownerName', 'more'];
 
   public dataSource = new MatTableDataSource<DataSpaceNodeModel>();
   public selection = new SelectionModel<DataSpaceNodeModel>(true, []);
@@ -50,7 +51,15 @@ export class DataSpacePageComponent {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  public getFileType(fileName: string) {
-    return FileUtils.getTypeDescription(fileName);
+  public getFileLabel(fileName: string) {
+    return FileTypeUtils.getFileLabel(fileName);
+  }
+
+  public getFileIcon(fileName: string) {
+    return FileTypeUtils.getFileIcon(fileName);
+  }
+
+  public getHumanTimestamp(timestamp: string) {
+    return DateTimeUtils.formatISODate(timestamp);
   }
 }

@@ -12,7 +12,7 @@ export class ProfilePageComponent implements OnInit {
   private username: string;
   public account: AccountModel;
 
-  public get dateRegisteredHuman() {
+  public get dateRegisteredHumanTimestamp() {
     return DateTimeUtils.formatISODate(this.account.dateRegistered);
   }
 
