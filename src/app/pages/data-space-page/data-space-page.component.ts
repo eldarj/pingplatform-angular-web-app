@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
-import {DataSpaceDataService} from '../../services/data/data-space-data.service';
+import {DataSpaceHubClientService} from '../../services/api/signalr/data-space-hub-client.service';
 import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
 import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
 import {DateTimeUtils} from '../../utils/date-time.utils';
@@ -36,7 +36,7 @@ export class DataSpacePageComponent {
 
   public isLoading = true;
 
-  constructor(private dataSpaceService: DataSpaceDataService) {
+  constructor(private dataSpaceService: DataSpaceHubClientService) {
     this.dataSpaceService.fileMetaData$.subscribe(result => {
       setTimeout(() => {
         this.dataSource.data = result.map(node => {

@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {AuthDataService} from '../../../services/data/auth-data.service';
+import {AuthHubClientService} from '../../../services/api/signalr/auth-hub-client.service';
 import {Router} from '@angular/router';
 import {MatSnackBar} from '@angular/material';
 import {ResponseModel} from '../../../shared/models/wrappers/response.model';
@@ -27,7 +27,7 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authService: AuthDataService,
+    private authService: AuthHubClientService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {

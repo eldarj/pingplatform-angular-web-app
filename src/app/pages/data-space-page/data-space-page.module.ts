@@ -4,7 +4,7 @@ import {DataSpacePageComponent} from './data-space-page.component';
 import {RouterModule, Routes} from '@angular/router';
 import {MaterialModule} from '../../shared/modules/material/material.module';
 import {DataSpaceNavigationComponent} from './data-space-navigation/data-space-navigation.component';
-import { NewDirectoryComponent } from './dialogs/new-directory/new-directory.component';
+import {NewDirectoryDialogComponent} from './dialogs/new-directory/new-directory-dialog.component';
 import {CommonSharedModule} from '../../shared/modules/common/common-shared.module';
 
 const routes: Routes = [
@@ -15,7 +15,7 @@ const routes: Routes = [
   declarations: [
     DataSpacePageComponent,
     DataSpaceNavigationComponent,
-    NewDirectoryComponent
+    NewDirectoryDialogComponent
   ],
   imports: [
     CommonModule,
@@ -25,6 +25,9 @@ const routes: Routes = [
   ],
   exports: [
     RouterModule
+  ],
+  entryComponents: [
+    NewDirectoryDialogComponent,
   ]
 })
 export class DataSpacePageModule {

@@ -1,19 +1,19 @@
-import {BaseHubClientService} from '../base/base-hub-client.service';
 import {Injectable} from '@angular/core';
-import {UserPersistanceService} from '../persistance/user-persistance.service';
 import {Subject} from 'rxjs';
-import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
+import {DataSpaceNodeModel} from '../../../shared/models/data/data-space-node.model';
+import {BaseHubClientService} from './base/base-hub-client.service';
+import {UserPersistanceService} from '../../persistance/user-persistance.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class DataSpaceDataService extends BaseHubClientService {
+export class DataSpaceHubClientService extends BaseHubClientService {
   private static HUB_ENDPOINT = 'dataspacehub';
 
   public fileMetaData$ = new Subject<DataSpaceNodeModel[]>();
 
   constructor(private userPersistanceService: UserPersistanceService) {
-    super(DataSpaceDataService.HUB_ENDPOINT, userPersistanceService.getSessionToken());
+    super(DataSpaceHubClientService.HUB_ENDPOINT, userPersistanceService.getSessionToken());
   }
 
   private static onError(error: any) {
@@ -44,13 +44,13 @@ export class DataSpaceDataService extends BaseHubClientService {
     setTimeout(() => {
       super.hubClient
         .invoke('RequestAuthentication', '124', {phoneNumber, callingCountryCode})
-        .catch(DataSpaceDataService.onError);
+        .catch(DataSpaceHubClientService.onError);
     }, 1000);
   }
 
   onHubClientConnected(): void {
     super.hubClient
       .invoke('RequestFilesMetaData')
-      .catch(DataSpaceDataService.onError);
+      .catch(DataSpaceHubClientService.onError);
   }
 }

@@ -1,13 +1,13 @@
 import {Injectable} from '@angular/core';
 import {Subject} from 'rxjs';
-import {BaseHubClientService} from '../base/base-hub-client.service';
-import {CallingCodeModel} from '../../shared/models/data/calling-code.model';
-import {UserPersistanceService} from '../persistance/user-persistance.service';
+import {CallingCodeModel} from '../../../shared/models/data/calling-code.model';
+import {BaseHubClientService} from './base/base-hub-client.service';
+import {UserPersistanceService} from '../../persistance/user-persistance.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class AuthDataService extends BaseHubClientService {
+export class AuthHubClientService extends BaseHubClientService {
   private static HUB_ENDPOINT = 'authhub';
 
   public callingCodes = []; // use this on-pre initialize and on nav-changes
@@ -20,7 +20,7 @@ export class AuthDataService extends BaseHubClientService {
   public preloadedPhoneNumber: string;
 
   constructor(private userPersistanceService: UserPersistanceService) {
-    super(AuthDataService.HUB_ENDPOINT);
+    super(AuthHubClientService.HUB_ENDPOINT);
   }
 
   private static onError(error: any) {
@@ -57,20 +57,20 @@ export class AuthDataService extends BaseHubClientService {
         firstname,
         lastname
       })
-      .catch(AuthDataService.onError);
+      .catch(AuthHubClientService.onError);
   }
 
   login(phoneNumber: string, callingCountryCode: number): void {
     setTimeout(() => {
       super.hubClient
         .invoke('RequestAuthentication', '124', {phoneNumber, callingCountryCode})
-        .catch(AuthDataService.onError);
+        .catch(AuthHubClientService.onError);
     }, 1000);
   }
 
   onHubClientConnected(): void {
     super.hubClient
       .invoke('RequestCallingCodes', '124')
-      .catch(AuthDataService.onError);
+      .catch(AuthHubClientService.onError);
   }
 }
