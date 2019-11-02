@@ -1,0 +1,14 @@
+<h1 mat-dialog-title>Overwrite directory</h1>
+<div mat-dialog-content>
+  <span>Directory with same name already exist, and by confirming the upload, the next ones would be overwritten:</span>
+  <hr class="shadow-hr">
+  <span>
+    <b>{{data.directoryName}}</b>
+  </span>
+  <hr class="shadow-hr">
+  <p>Would you like to proceed with creating the new directory?</p>
+</div>
+<div mat-dialog-actions class="flex justify-content-right">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button (click)="save()" color="primary">Create and overwrite</button>
+</div>

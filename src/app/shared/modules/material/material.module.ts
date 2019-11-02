@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
+  MAT_DIALOG_DEFAULT_OPTIONS,
   MatButtonModule,
-  MatCheckboxModule, MatChipsModule, MatDialogModule, MatDividerModule,
+  MatCheckboxModule, MatChipsModule, MatDialogConfig, MatDialogModule, MatDividerModule,
   MatFormFieldModule,
   MatIconModule,
   MatInputModule, MatMenuModule, MatPaginatorModule,
@@ -49,6 +50,17 @@ import {
     MatSortModule,
     MatChipsModule,
     MatDialogModule,
+  ],
+  providers: [
+    {
+      provide: MAT_DIALOG_DEFAULT_OPTIONS,
+      useValue: {
+        ...new MatDialogConfig(),
+        hasBackdrop: true,
+        minWidth: 400,
+        maxWidth: 400
+      } as MatDialogConfig,
+    }
   ]
 })
 export class MaterialModule {

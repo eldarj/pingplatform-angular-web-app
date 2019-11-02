@@ -3,6 +3,9 @@ import {HttpClient} from '@angular/common/http';
 import {BaseRestService} from './base/base-rest.service';
 import {Observable} from 'rxjs';
 
+/**
+ * DataSpace rest api client service
+ */
 @Injectable({
   providedIn: 'root'
 })
@@ -13,13 +16,12 @@ export class DataSpaceRestService extends BaseRestService {
     super(DataSpaceRestService.REST_ENDPOINT);
   }
 
-  public post(): Observable {
-    console.log('hello');
-    console.log(this.url);
-    return this.httpClient.post(this.url, {
+  public createDirectory(directoryName: string): Observable<any> {
+    const dirRequest = { name: directoryName };
+    return this.httpClient.post(this.url, dirRequest, {
       headers: {
-        AppId: 'ycyxc',
-        OwnerPhoneNumber: 62005152
+        AppId: 'yxcyx',
+        OwnerPhoneNumber: '61290611',
       },
       withCredentials: false
     });

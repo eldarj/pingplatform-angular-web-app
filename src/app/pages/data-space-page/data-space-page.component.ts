@@ -1,11 +1,12 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
-import {DataSpaceHubClientService} from '../../services/api/signalr/data-space-hub-client.service';
 import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
 import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
 import {DateTimeUtils} from '../../utils/date-time.utils';
 import {Subscription} from 'rxjs';
+import {DataSpaceDataService} from '../../services/data/data-space-data.service';
+import {InternalEventModel} from '../../shared/models/event/internal-event-model';
 
 @Component({
   selector: 'app-data-space-page',
@@ -36,14 +37,17 @@ export class DataSpacePageComponent {
 
   public isLoading = true;
 
-  constructor(private dataSpaceService: DataSpaceHubClientService) {
-    this.dataSpaceService.fileMetaData$.subscribe(result => {
+  constructor(private dataSpaceDataService: DataSpaceDataService, private changeDetectorRefs: ChangeDetectorRef) {
+    this.dataSpaceDataService.fileMetaData$.subscribe(event => {
+      this.isLoading = true;
       setTimeout(() => {
-        this.dataSource.data = result.map(node => {
+        const data = event.data.map(node => {
           node.ownerName = node.ownerFirstname + ' ' + node.ownerLastname;
           return node;
         });
+        this.dataSource.data = [...data, ...this.dataSource.data];
         this.isLoading = false;
+        // this.changeDetectorRefs.detectChanges();
       }, 500);
     });
   }

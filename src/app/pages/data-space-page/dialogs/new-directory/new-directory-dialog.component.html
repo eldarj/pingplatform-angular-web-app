@@ -1,11 +1,17 @@
 <h1 mat-dialog-title>New directory</h1>
 <div mat-dialog-content>
-  <p>Directory name</p>
-  <mat-form-field class="w-100">
-    <input matInput [(ngModel)]="directoryName">
-  </mat-form-field>
+  <div [formGroup]="form">
+    <mat-form-field class="w-100">
+      <input matInput formControlName="directoryName" placeholder="Directory name">
+    </mat-form-field>
+    <div *ngIf="isInvalid()" class="mat-error">
+      <div *ngIf="directoryNameControl.errors?.required">A directory name is required!</div>
+      <div *ngIf="directoryNameControl.errors?.minlength">Directory name has to be at least 2 characters long.</div>
+    </div>
+  </div>
 </div>
 <div mat-dialog-actions class="flex justify-content-right">
   <button mat-button (click)="cancel()">Cancel</button>
-  <button mat-flat-button [mat-dialog-close]="directoryName" color="primary">Save</button>
+  <button mat-flat-button (click)="save()" color="primary"
+    [disabled]="directoryNameControl.invalid">Save</button>
 </div>

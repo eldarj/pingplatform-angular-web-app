@@ -46,6 +46,22 @@
   }
 }
 
+.mat-like-input {
+  height: inherit;
+  display: flex;
+  border-bottom: 1px solid rgb(0, 0, .3);
+
+  input {
+    height: inherit;
+    border: none;
+    background: transparent;
+
+    &:focus, &:active {
+      outline: none;
+    }
+  }
+}
+
 // component like ->
 
 hr {

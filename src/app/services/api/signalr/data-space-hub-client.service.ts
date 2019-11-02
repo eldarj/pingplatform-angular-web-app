@@ -3,14 +3,18 @@ import {Subject} from 'rxjs';
 import {DataSpaceNodeModel} from '../../../shared/models/data/data-space-node.model';
 import {BaseHubClientService} from './base/base-hub-client.service';
 import {UserPersistanceService} from '../../persistance/user-persistance.service';
+import {InternalEventModel} from '../../../shared/models/event/internal-event-model';
 
+/**
+ * DataSpace signalr hub client service
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class DataSpaceHubClientService extends BaseHubClientService {
   private static HUB_ENDPOINT = 'dataspacehub';
 
-  public fileMetaData$ = new Subject<DataSpaceNodeModel[]>();
+  public fileMetaData$ = new Subject<InternalEventModel>();
 
   constructor(private userPersistanceService: UserPersistanceService) {
     super(DataSpaceHubClientService.HUB_ENDPOINT, userPersistanceService.getSessionToken());
@@ -21,8 +25,11 @@ export class DataSpaceHubClientService extends BaseHubClientService {
   }
 
   doRegisterHubClientHandlers(): void {
-    super.hubClient.on(`RequestFilesMetaDataSuccess`, (result: {nodes: any[]}) => {
-      this.fileMetaData$.next(result.nodes);
+    super.hubClient.on(`RequestFilesMetaDataSuccess`, (result: { nodes: any[] }) => {
+      this.fileMetaData$.next(new InternalEventModel ('RequestFilesMetaDataSuccess', result.nodes));
+    });
+    super.hubClient.on('SaveDirectoryMetadataSuccess', (result: DataSpaceNodeModel) => {
+      this.fileMetaData$.next(new InternalEventModel ('SaveDirectoryMetadataSuccess', [result]));
     });
     // super.hubClient.on('AuthenticationDone124', result => {
     //   this.loggedInUser$.next(result);
@@ -49,6 +56,10 @@ export class DataSpaceHubClientService extends BaseHubClientService {
   }
 
   onHubClientConnected(): void {
+    this.requestFileMetaData();
+  }
+
+  public requestFileMetaData() {
     super.hubClient
       .invoke('RequestFilesMetaData')
       .catch(DataSpaceHubClientService.onError);

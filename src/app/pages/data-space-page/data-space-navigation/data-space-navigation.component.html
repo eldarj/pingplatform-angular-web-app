@@ -45,9 +45,12 @@
   </div>
 
   <div class="data-space-search">
-    <mat-icon>search</mat-icon>
-    <mat-form-field class="data-space-search-input">
-      <input matInput placeholder="Search..." (keyup)="searchFilter($event.target.value)">
-    </mat-form-field>
+    <mat-spinner *ngIf="isLoading()" [diameter]="20" class="status-icon load"></mat-spinner>
+    <span *ngIf="isSuccess()" class="status-icon success"><i class="fas fa-check-circle"></i></span>
+    <span *ngIf="isFail()" class="status-icon fail"><i class="fas fa-times-circle"></i></span>
+    <mat-icon class="search-icon">search</mat-icon>
+    <div class="mat-like-input" >
+      <input placeholder="Search..." (keyup)="searchFilter($event.target.value)">
+    </div>
   </div>
 </mat-toolbar>

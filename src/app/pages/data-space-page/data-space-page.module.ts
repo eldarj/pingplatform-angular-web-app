@@ -6,6 +6,7 @@ import {MaterialModule} from '../../shared/modules/material/material.module';
 import {DataSpaceNavigationComponent} from './data-space-navigation/data-space-navigation.component';
 import {NewDirectoryDialogComponent} from './dialogs/new-directory/new-directory-dialog.component';
 import {CommonSharedModule} from '../../shared/modules/common/common-shared.module';
+import {OverwriteDirectoryDialogComponent} from './dialogs/overwrite-directory/overwrite-directory-dialog.component';
 
 const routes: Routes = [
   {path: ':username', component: DataSpacePageComponent}
@@ -15,7 +16,8 @@ const routes: Routes = [
   declarations: [
     DataSpacePageComponent,
     DataSpaceNavigationComponent,
-    NewDirectoryDialogComponent
+    NewDirectoryDialogComponent,
+    OverwriteDirectoryDialogComponent,
   ],
   imports: [
     CommonModule,
@@ -28,6 +30,7 @@ const routes: Routes = [
   ],
   entryComponents: [
     NewDirectoryDialogComponent,
+    OverwriteDirectoryDialogComponent,
   ]
 })
 export class DataSpacePageModule {
