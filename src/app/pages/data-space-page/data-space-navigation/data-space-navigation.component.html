@@ -39,13 +39,13 @@
       <mat-icon>more_vert</mat-icon>
     </button>
     <mat-menu #menu="matMenu">
-      <button mat-menu-item>Item 1</button>
+      <button mat-menu-item (click)="deleteMultipleNodes()">Delete</button>
       <button mat-menu-item>Item 2</button>
     </mat-menu>
   </div>
 
   <div class="data-space-search">
-    <mat-spinner *ngIf="isLoading()" [diameter]="20" class="status-icon load"></mat-spinner>
+    <mat-spinner *ngIf="isLoading() " [diameter]="20" class="status-icon load"></mat-spinner>
     <span *ngIf="isSuccess()" class="status-icon success"><i class="fas fa-check-circle"></i></span>
     <span *ngIf="isFail()" class="status-icon fail"><i class="fas fa-times-circle"></i></span>
     <mat-icon class="search-icon">search</mat-icon>

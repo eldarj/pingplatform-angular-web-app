@@ -15,12 +15,20 @@ export class DataSpaceNavigationComponent {
 
   constructor(private dialog: MatDialog, private dataSpaceDataService: DataSpaceDataService) {
     dataSpaceDataService.emitter.subscribe(event => {
-      if (event === 'CreateDirectory') {
-        this.statusIcon = StatusEnum.LOADING;
-      } else if (event === 'SaveDirectoryMetadataSuccess') {
-        setTimeout(() => {
-          this.statusIcon = StatusEnum.SUCCESS;
-        }, 500);
+      switch (event) {
+        case 'CreateDirectory' || 'DeleteDirectory': {
+          this.statusIcon = StatusEnum.LOADING;
+          break;
+        }
+        case 'SaveDirectoryMetadataSuccess' || 'DeleteDirectoryMetadataSuccess': {
+          setTimeout(() => {
+            this.statusIcon = StatusEnum.SUCCESS;
+          }, 500);
+          break;
+        }
+        default: {
+          break;
+        }
       }
     });
   }
@@ -44,5 +52,9 @@ export class DataSpaceNavigationComponent {
 
   public openNewDirectoryDialog() {
     this.dialog.open(NewDirectoryDialogComponent);
+  }
+
+  public deleteMultipleNodes() {
+    this.dataSpaceDataService.emitter.emit('DeleteMultipleNodes');
   }
 }

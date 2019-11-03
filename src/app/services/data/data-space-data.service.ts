@@ -32,12 +32,13 @@ export class DataSpaceDataService {
     return this.nodes;
   }
 
-  public createDirectory(directoryName): Observable<any> {
+  public createDirectory(directoryPath): Observable<any> {
     this.emitter.emit('CreateDirectory');
-    return this.dataSpaceRestService.createDirectory(directoryName);
+    return this.dataSpaceRestService.createDirectory(directoryPath);
   }
 
-  public refreshFileMetaData() {
-    this.dataSpaceHubClientService.requestFileMetaData();
+  public deleteDirectory(directoryPath): Observable<any> {
+    this.emitter.emit('DeleteDirectory');
+    return this.dataSpaceRestService.deleteDirectory(directoryPath);
   }
 }

@@ -10,7 +10,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class DataSpaceRestService extends BaseRestService {
-  private static REST_ENDPOINT = 'dataspace/eldarja/directories/xxx';
+  private static REST_ENDPOINT = 'dataspace/eldarja/directories';
 
   constructor(private httpClient: HttpClient) {
     super(DataSpaceRestService.REST_ENDPOINT);
@@ -21,7 +21,17 @@ export class DataSpaceRestService extends BaseRestService {
     return this.httpClient.post(this.url, dirRequest, {
       headers: {
         AppId: 'yxcyx',
-        OwnerPhoneNumber: '61290611',
+        OwnerPhoneNumber: '61290611'
+      },
+      withCredentials: false
+    });
+  }
+
+  public deleteDirectory(directoryName: string): Observable<any> {
+    return this.httpClient.delete(this.url + '/' + directoryName, {
+      headers: {
+        AppId: 'yxcyx',
+        OwnerPhoneNumber: '61290611'
       },
       withCredentials: false
     });

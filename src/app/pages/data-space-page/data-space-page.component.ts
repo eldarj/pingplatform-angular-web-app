@@ -6,7 +6,6 @@ import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
 import {DateTimeUtils} from '../../utils/date-time.utils';
 import {Subscription} from 'rxjs';
 import {DataSpaceDataService} from '../../services/data/data-space-data.service';
-import {InternalEventModel} from '../../shared/models/event/internal-event-model';
 
 @Component({
   selector: 'app-data-space-page',
@@ -38,14 +37,31 @@ export class DataSpacePageComponent {
   public isLoading = true;
 
   constructor(private dataSpaceDataService: DataSpaceDataService, private changeDetectorRefs: ChangeDetectorRef) {
+    this.dataSpaceDataService.emitter.subscribe(event => {
+      switch (event) {
+        case 'DeleteMultipleNodes': {
+
+          break;
+        }
+        default: {
+          break;
+        }
+      }
+    })
+
     this.dataSpaceDataService.fileMetaData$.subscribe(event => {
       this.isLoading = true;
       setTimeout(() => {
-        const data = event.data.map(node => {
-          node.ownerName = node.ownerFirstname + ' ' + node.ownerLastname;
-          return node;
-        });
-        this.dataSource.data = [...data, ...this.dataSource.data];
+        if (event.event === 'DeleteDirectoryMetadataSuccess') {
+          this.dataSource.data = this.dataSource.data
+            .filter(node => node.path + '/' + node.name !== event.data);
+        } else {
+          const data = event.data.map(node => {
+            node.ownerName = node.ownerFirstname + ' ' + node.ownerLastname;
+            return node;
+          });
+          this.dataSource.data = [...data, ...this.dataSource.data];
+        }
         this.isLoading = false;
         // this.changeDetectorRefs.detectChanges();
       }, 500);
@@ -78,5 +94,9 @@ export class DataSpacePageComponent {
 
   public getHumanTimestamp(timestamp: string) {
     return DateTimeUtils.formatISODate(timestamp);
+  }
+
+  public deleteDirectory(node: DataSpaceNodeModel) {
+    this.dataSpaceDataService.deleteDirectory(node.path + '/' + node.name).subscribe();
   }
 }
