@@ -20,10 +20,10 @@
 
 // POSITIONING
 .p-relative {
-  position: relative;
+  position: relative !important;
 }
 .p-absolute {
-  position: absolute;
+  position: absolute !important;
 }
 
 // SIZES

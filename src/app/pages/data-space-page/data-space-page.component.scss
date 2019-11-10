@@ -14,3 +14,11 @@ table {
   align-items: center;
   justify-content: center;
 }
+
+.preview-link {
+  cursor: pointer;
+  &:hover {
+    color: #999;
+    text-decoration: underline;
+  }
+}

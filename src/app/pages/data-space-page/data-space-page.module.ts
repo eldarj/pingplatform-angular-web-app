@@ -7,6 +7,8 @@ import {DataSpaceNavigationComponent} from './data-space-navigation/data-space-n
 import {NewDirectoryDialogComponent} from './dialogs/new-directory/new-directory-dialog.component';
 import {CommonSharedModule} from '../../shared/modules/common/common-shared.module';
 import {OverwriteDirectoryDialogComponent} from './dialogs/overwrite-directory/overwrite-directory-dialog.component';
+import {FilePreviewDialogComponent} from './dialogs/file-preview/file-preview-dialog.component';
+import {FileUploadOverwriteComponent} from './dialogs/file-upload-overwrite/file-upload-overwrite.component';
 
 const routes: Routes = [
   {path: ':username', component: DataSpacePageComponent}
@@ -18,6 +20,8 @@ const routes: Routes = [
     DataSpaceNavigationComponent,
     NewDirectoryDialogComponent,
     OverwriteDirectoryDialogComponent,
+    FilePreviewDialogComponent,
+    FileUploadOverwriteComponent,
   ],
   imports: [
     CommonModule,
@@ -31,6 +35,8 @@ const routes: Routes = [
   entryComponents: [
     NewDirectoryDialogComponent,
     OverwriteDirectoryDialogComponent,
+    FilePreviewDialogComponent,
+    FileUploadOverwriteComponent,
   ]
 })
 export class DataSpacePageModule {

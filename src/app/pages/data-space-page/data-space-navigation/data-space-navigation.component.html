@@ -8,14 +8,11 @@
       <button mat-menu-item (click)="openNewDirectoryDialog()">Directory</button>
     </mat-menu>
 
-    <button mat-button class="mat-btn-icon" [matMenuTriggerFor]="menu">
+    <button mat-button class="mat-btn-icon" (click)="uploadFile()">
       <mat-icon>cloud_upload</mat-icon>
       Upload
     </button>
-    <mat-menu #menu="matMenu">
-      <button mat-menu-item>Item 1</button>
-      <button mat-menu-item>Item 2</button>
-    </mat-menu>
+    <input id="uploadFileInput" type="file" (change)="uploadFileSelected($event)" multiple hidden />
 
     <button mat-button class="mat-btn-icon" [matMenuTriggerFor]="menu">
       <mat-icon>share</mat-icon>

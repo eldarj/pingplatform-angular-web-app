@@ -18,6 +18,8 @@ export class DataSpaceNodeModel {
 
   public ownerName: string;
 
+  public fileObjectUrl = '';
+
   constructor() {
   }
 }

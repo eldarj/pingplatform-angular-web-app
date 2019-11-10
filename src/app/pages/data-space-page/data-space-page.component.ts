@@ -1,11 +1,12 @@
 import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
-import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
+import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
 import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
 import {DateTimeUtils} from '../../utils/date-time.utils';
-import {Subscription} from 'rxjs';
+import {Subject, Subscription} from 'rxjs';
 import {DataSpaceDataService} from '../../services/data/data-space-data.service';
+import {FilePreviewDialogComponent} from './dialogs/file-preview/file-preview-dialog.component';
 
 @Component({
   selector: 'app-data-space-page',
@@ -15,8 +16,6 @@ import {DataSpaceDataService} from '../../services/data/data-space-data.service'
 export class DataSpacePageComponent {
   @ViewChild(MatPaginator, {static: false}) paginator: MatPaginator;
   @ViewChild(MatSort, {static: false}) sort: MatSort;
-
-  fileMetaData$: Subscription;
 
   public displayedColumns: string[] = [
     'select',
@@ -36,23 +35,29 @@ export class DataSpacePageComponent {
 
   public isLoading = true;
 
-  constructor(private dataSpaceDataService: DataSpaceDataService, private changeDetectorRefs: ChangeDetectorRef) {
+  public get dataSpaceEmpty() {
+    return this.dataSource.data === undefined || this.dataSource.data.length < 1;
+  }
+
+  constructor(
+    private dialog: MatDialog,
+    private dataSpaceDataService: DataSpaceDataService
+  ) {
     this.dataSpaceDataService.emitter.subscribe(event => {
       switch (event) {
         case 'DeleteMultipleNodes': {
-
           break;
         }
         default: {
           break;
         }
       }
-    })
+    });
 
     this.dataSpaceDataService.fileMetaData$.subscribe(event => {
       this.isLoading = true;
       setTimeout(() => {
-        if (event.event === 'DeleteDirectoryMetadataSuccess') {
+        if (event.event === 'DeleteDirectoryMetadataSuccess' || event.event === 'DeleteFileMetadataSuccess') {
           this.dataSource.data = this.dataSource.data
             .filter(node => node.path + '/' + node.name !== event.data);
         } else {
@@ -96,7 +101,41 @@ export class DataSpacePageComponent {
     return DateTimeUtils.formatISODate(timestamp);
   }
 
-  public deleteDirectory(node: DataSpaceNodeModel) {
-    this.dataSpaceDataService.deleteDirectory(node.path + '/' + node.name).subscribe();
+  public deleteItem(item: DataSpaceNodeModel) {
+    this.dataSpaceDataService.deleteItem(item).subscribe();
+  }
+
+  public openFilePreview(node: DataSpaceNodeModel) {
+    const fileSubject = new Subject<any>();
+    fileSubject.subscribe((loadedFileObjectUrl: string) => {
+      node.fileObjectUrl = loadedFileObjectUrl;
+    });
+
+    this.dialog.open(FilePreviewDialogComponent, {
+      data: { node, fileBlobSubject: fileSubject },
+      autoFocus: false,
+      panelClass: 'file-preview-dialog'
+    });
+
+    // If it not an img, vid or audio file, just display the preview without rendering any more content (icon is there by default)
+    // if (['image', 'video', 'audio'].indexOf(this.state.fileType) < 0) {
+    //   this.setState({
+    //     IsPreviewModalVisible: true
+    //   });
+    //   return;
+    // }
+
+    // Check if we already have this content fetched from API, from earlier
+    // if (this.state.contentBlob) {
+    //   this.setState({
+    //     ObjectURL: URL.createObjectURL(this.state.contentBlob),
+    //     IsPreviewModalVisible: true
+    //   });
+    //   URL.revokeObjectURL(this.state.ObjectURL);
+    //   return;
+    // }
+    //
+    // // Otherwise, display a spinner icon and fetch data from API
+    // this._fetchFromApi();
   }
 }

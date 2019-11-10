@@ -28,8 +28,17 @@ export class DataSpaceDataService {
     });
   }
 
-  public getNodes() {
+  public getNodes(): DataSpaceNodeModel[] {
     return this.nodes;
+  }
+
+  public uploadFiles(formData: FormData): Observable<any> {
+    this.emitter.emit('UploadFile');
+    return this.dataSpaceRestService.uploadFiles(formData);
+  }
+
+  public loadFile(filePath): Observable<any> {
+    return this.dataSpaceRestService.loadFile(filePath);
   }
 
   public createDirectory(directoryPath): Observable<any> {
@@ -37,8 +46,13 @@ export class DataSpaceDataService {
     return this.dataSpaceRestService.createDirectory(directoryPath);
   }
 
-  public deleteDirectory(directoryPath): Observable<any> {
-    this.emitter.emit('DeleteDirectory');
-    return this.dataSpaceRestService.deleteDirectory(directoryPath);
+  public deleteItem(item: DataSpaceNodeModel): Observable<any> {
+    if (item.nodeType === 'Directory') {
+      this.emitter.emit('DeleteDirectory');
+      return this.dataSpaceRestService.deleteDirectory(item.path + '/' + item.name);
+    } else {
+      this.emitter.emit('DeleteFile');
+      return this.dataSpaceRestService.deleteFile(item.path + '/' + item.name);
+    }
   }
 }

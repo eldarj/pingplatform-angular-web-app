@@ -1,0 +1,39 @@
+<div class="d-flex justify-content-right">
+  <button mat-icon-button color="primary" (click)="cancel()" class="p-absolute preview-close-btn">
+    <mat-icon>close</mat-icon>
+  </button>
+</div>
+<div mat-dialog-content>
+  <div>
+    <mat-spinner class="mat-spinner-sm" *ngIf="fileLoading"></mat-spinner>
+    <img id="previewImg" [src]="filePreviewSrc" class="preview-img" *ngIf="!fileLoading"/>
+  </div>
+  <div class="preview-details">
+    <div class="d-flex justify-content-between align-items-center">
+      <strong class="modal-title">{{data.node.name}}</strong>
+      <div class="d-flex flex-column">
+        <span class="badge badge-dark bg-primary-blue">
+            {{data.node.name}}
+        </span>
+        <span class="blockquote-footer">
+          {{data.node.fileSizeInKB}}
+        </span>
+      </div>
+    </div>
+    <hr />
+    <div class="info">
+      <p>
+        <strong>{{data.node.ownerFirstname}} {{data.node.ownerLastname}}</strong>
+        <span> - {{data.node.creationTime}}</span>
+      </p>
+      <p>
+        <mat-icon>lock</mat-icon>
+        {{data.node.private ? 'Private' : 'Public'}}
+      </p>
+      <button mat-button>Share</button>
+      <button mat-button>More</button>
+      <button mat-button>Copy URL</button>
+    </div>
+  </div>
+  <button mat-button (click)="downloadFile()">Download</button>
+</div>

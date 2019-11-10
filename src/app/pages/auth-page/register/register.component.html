@@ -4,13 +4,12 @@
 
       <div class="d-flex justify-content-space-between align-items-center">
         <span>Create an account</span>
-        <mat-spinner class="mat-spinner-sm"
-                     *ngIf="formLoading"></mat-spinner>
+        <mat-spinner class="mat-spinner-sm" *ngIf="formLoading"></mat-spinner>
       </div>
 
       <div class="form-group">
         <div class="input-holder p-relative">
-          <mat-form-field appearance="outline" >
+          <mat-form-field appearance="outline">
             <mat-label>Calling code</mat-label>
             <mat-select formControlName="callingCode" [attr.disabled]="formLoading">
               <mat-option *ngFor="let code of callingCodes" [value]="code.callingCountryCode">

@@ -1,0 +1,19 @@
+<h1 mat-dialog-title>Overwrite files</h1>
+<div mat-dialog-content>
+  <div *ngIf="multiple">
+    <span>Files with same names already exist, by confirming the upload the next ones would be overwritten:</span>
+    <hr class="shadow-hr">
+    <p *ngFor="let file of data.files">
+      <b>{{file.name}}</b>
+    </p>
+  </div>
+  <div *ngIf="!multiple">
+    <span>File <b>{{data.files[0].name}}</b> already exists, by confirming the upload it would be overwritten.</span>
+  </div>
+  <hr class="shadow-hr">
+  <p>Would you like to proceed with the upload?</p>
+</div>
+<div mat-dialog-actions class="flex justify-content-right">
+  <button mat-button (click)="cancel()">Cancel</button>
+  <button mat-flat-button (click)="save()">Upload and overwrite</button>
+</div>

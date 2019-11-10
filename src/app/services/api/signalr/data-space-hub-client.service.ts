@@ -34,10 +34,19 @@ export class DataSpaceHubClientService extends BaseHubClientService {
     super.hubClient.on('DeleteDirectoryMetadataSuccess', (oldDirectoryPath: string) => {
       this.fileMetaData$.next(new InternalEventModel('DeleteDirectoryMetadataSuccess', oldDirectoryPath));
     });
+
+    super.hubClient.on('UploadFileSuccess', (result: DataSpaceNodeModel) => {
+      this.fileMetaData$.next(new InternalEventModel('UploadFileSuccess', [result]));
+    });
+
+    super.hubClient.on('DeleteFileMetadataSuccess', (oldFilePath: string) => {
+      this.fileMetaData$.next(new InternalEventModel('DeleteFileMetadataSuccess', oldFilePath));
+    });
+
     // super.hubClient.on('AuthenticationDone124', result => {
     //   this.loggedInUser$.next(result);
     //   this.userPersistanceService.setSessionToken(result.content.token);
-    // });
+    // });|
     // super.hubClient.on('AuthenticationFailed124', result => {
     //   this.loggedInUser$.next(result);
     // });
