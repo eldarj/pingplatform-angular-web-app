@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {BaseRestService} from './base/base-rest.service';
 import {Observable} from 'rxjs';
+import {DataSpaceNodeModel} from '../../../shared/models/data/data-space-node.model';
 
 /**
  * DataSpace rest api client service
@@ -56,6 +57,20 @@ export class DataSpaceRestService extends BaseRestService {
 
   public deleteFile(fileName: string): Observable<any> {
     return this.httpClient.delete(this.url + '/files/' + fileName, {
+      headers: {
+        AppId: 'yxcyx',
+        OwnerPhoneNumber: '61290611'
+      },
+      withCredentials: false
+    });
+  }
+
+  public deleteMultipleItems(items: DataSpaceNodeModel[]): Observable<any> {
+    const itemsToDelete = items.map(node => {
+      return {name: node.name, path: node.path, nodeType: node.nodeType};
+    });
+
+    return this.httpClient.post(this.url + '/delete-multiple', itemsToDelete, {
       headers: {
         AppId: 'yxcyx',
         OwnerPhoneNumber: '61290611'

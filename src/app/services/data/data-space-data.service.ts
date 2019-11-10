@@ -22,8 +22,21 @@ export class DataSpaceDataService {
     private dataSpaceRestService: DataSpaceRestService
   ) {
     this.dataSpaceHubClientService.fileMetaData$.subscribe(event => {
-      this.nodes = event.data;
-      this.fileMetaData$.next(event);
+      if (event.event === 'DeleteDirectoryMetadataSuccess' || event.event === 'DeleteFileMetadataSuccess') {
+        this.nodes = event.data
+          .filter(node => node.path + '/' + node.name !== event.data);
+      } else if (event.event === 'DeleteMultipleNodesMetadataSuccess') {
+        const deletedItemPaths = (event.data as DataSpaceNodeModel[]).map(item => item.path + '/' + item.name);
+        this.nodes = this.nodes
+          .filter(node => deletedItemPaths.indexOf(node.path + '/' + node.name) === -1);
+      } else {
+        const data = event.data.map(node => {
+          node.ownerName = node.ownerFirstname + ' ' + node.ownerLastname;
+          return node;
+        });
+        this.nodes = [...data, ...this.nodes];
+      }
+      this.fileMetaData$.next(new InternalEventModel('new-data', this.nodes));
       this.emitter.emit(event.event);
     });
   }
@@ -44,6 +57,10 @@ export class DataSpaceDataService {
   public createDirectory(directoryPath): Observable<any> {
     this.emitter.emit('CreateDirectory');
     return this.dataSpaceRestService.createDirectory(directoryPath);
+  }
+
+  public deleteItems(items: DataSpaceNodeModel[]): Observable<any> {
+    return this.dataSpaceRestService.deleteMultipleItems(items);
   }
 
   public deleteItem(item: DataSpaceNodeModel): Observable<any> {

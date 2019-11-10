@@ -46,7 +46,7 @@ export class DataSpacePageComponent {
     this.dataSpaceDataService.emitter.subscribe(event => {
       switch (event) {
         case 'DeleteMultipleNodes': {
-          console.log(this.selection.selected);
+          this.dataSpaceDataService.deleteItems(this.selection.selected).subscribe();
           break;
         }
         case 'DownloadMultipleNodes': {
@@ -63,16 +63,7 @@ export class DataSpacePageComponent {
     this.dataSpaceDataService.fileMetaData$.subscribe(event => {
       this.isLoading = true;
       setTimeout(() => {
-        if (event.event === 'DeleteDirectoryMetadataSuccess' || event.event === 'DeleteFileMetadataSuccess') {
-          this.dataSource.data = this.dataSource.data
-            .filter(node => node.path + '/' + node.name !== event.data);
-        } else {
-          const data = event.data.map(node => {
-            node.ownerName = node.ownerFirstname + ' ' + node.ownerLastname;
-            return node;
-          });
-          this.dataSource.data = [...data, ...this.dataSource.data];
-        }
+        this.dataSource.data = event.data;
         this.isLoading = false;
         // this.changeDetectorRefs.detectChanges();
       }, 500);
@@ -118,7 +109,7 @@ export class DataSpacePageComponent {
     });
 
     this.dialog.open(FilePreviewDialogComponent, {
-      data: { node, fileBlobSubject: fileSubject },
+      data: {node, fileBlobSubject: fileSubject},
       autoFocus: false,
       panelClass: 'file-preview-dialog'
     });
