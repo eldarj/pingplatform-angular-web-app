@@ -12,3 +12,28 @@
     }
   }
 }
+.preview-close-btn {
+  z-index: 1;
+}
+.video-wrapper {
+  video {
+    max-width: inherit;
+    width: inherit;
+  }
+}
+.audio-wrapper {
+  &.ping-poster {
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    align-items: center;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .4);
+    margin-bottom: 35px;
+
+    audio {
+      outline: none;
+      margin: 0 25px -25px;
+    }
+  }
+}

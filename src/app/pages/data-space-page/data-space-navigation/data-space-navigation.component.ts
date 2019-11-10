@@ -15,9 +15,9 @@ export class DataSpaceNavigationComponent {
   private statusIcon: StatusEnum = StatusEnum.NONE;
 
   constructor(private dialog: MatDialog, private dataSpaceDataService: DataSpaceDataService) {
-    dataSpaceDataService.emitter.subscribe(event => {
+    this.dataSpaceDataService.emitter.subscribe(event => {
       switch (event) {
-        case 'CreateDirectory' || 'DeleteDirectory' || 'DeleteFile' || 'UploadFile' || 'DeleteMultipleNodes': {
+        case 'CreateDirectory' || 'DeleteDirectory' || 'DeleteFile' || 'UploadFile' || 'DeleteMultipleNodes' || 'DownloadMultipleNodes': {
           console.log(event);
           this.statusIcon = StatusEnum.LOADING;
           break;
@@ -81,6 +81,10 @@ export class DataSpaceNavigationComponent {
     } else {
       this.dataSpaceDataService.uploadFiles(formData).subscribe();
     }
+  }
+
+  public downloadMultipleNodes() {
+    this.dataSpaceDataService.emitter.emit('DownloadMultipleNodes');
   }
 
   public deleteMultipleNodes() {

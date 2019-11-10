@@ -63,7 +63,6 @@
 }
 
 // component like ->
-
 hr {
   display: block;
   border: none;
@@ -78,4 +77,11 @@ hr {
     margin-top: 35px;
     margin-bottom: 35px;
   }
+}
+
+// BRANDING
+.ping-poster {
+  background: url('~/assets/images/corporate/other/ping-600x335-dark.png');
+  background-size: cover;
+  background-position: center;
 }

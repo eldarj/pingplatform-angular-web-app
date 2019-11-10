@@ -46,6 +46,12 @@ export class DataSpacePageComponent {
     this.dataSpaceDataService.emitter.subscribe(event => {
       switch (event) {
         case 'DeleteMultipleNodes': {
+          console.log(this.selection.selected);
+          break;
+        }
+        case 'DownloadMultipleNodes': {
+          console.log(this.selection.selected);
+          // manage api - zip multiple files or something
           break;
         }
         default: {
