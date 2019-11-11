@@ -4,6 +4,7 @@
 import typesMap from './vars/types-map';
 import extensions from './vars/extensions';
 import icons from './vars/icons';
+import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
 
 export class FileTypeUtils {
   static getFileLabel(fileName: string): string {
@@ -18,9 +19,17 @@ export class FileTypeUtils {
     return '-';
   }
 
-  static getFileIcon(fileName: string): string {
-    const fileExtension = fileName.split('.').pop().toLowerCase();
-    return extensions[fileExtension] || icons.file;
+  static getIcon(item?: DataSpaceNodeModel): string {
+    if (item !== undefined) {
+      if (item.nodeType === 'Directory') {
+        return icons.dir;
+      } else {
+        const fileExtension = item.name.split('.').pop().toLowerCase();
+        return extensions[fileExtension] || icons.file;
+      }
+    } else {
+      return icons.file;
+    }
   }
 
   static getBasicType(mimeType: string): string {

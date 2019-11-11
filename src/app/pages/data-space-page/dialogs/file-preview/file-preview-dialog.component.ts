@@ -56,7 +56,7 @@ export class FilePreviewDialogComponent {
   }
 
   public getFileIcon(fileName: string) {
-    return FileTypeUtils.getFileIcon(fileName);
+    return FileTypeUtils.getIcon(fileName);
   }
 
   public cancel(): void {

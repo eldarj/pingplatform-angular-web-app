@@ -7,6 +7,7 @@ import {DateTimeUtils} from '../../utils/date-time.utils';
 import {Subject, Subscription} from 'rxjs';
 import {DataSpaceDataService} from '../../services/data/data-space-data.service';
 import {FilePreviewDialogComponent} from './dialogs/file-preview/file-preview-dialog.component';
+import icons from '../../utils/file-type/vars/icons';
 
 @Component({
   selector: 'app-data-space-page',
@@ -93,8 +94,8 @@ export class DataSpacePageComponent {
     return FileTypeUtils.getFileLabel(fileName);
   }
 
-  public getFileIcon(fileName: string) {
-    return FileTypeUtils.getFileIcon(fileName);
+  public getFileIcon(item?: DataSpaceNodeModel) {
+    return FileTypeUtils.getIcon(item);
   }
 
   public getHumanTimestamp(timestamp: string) {
