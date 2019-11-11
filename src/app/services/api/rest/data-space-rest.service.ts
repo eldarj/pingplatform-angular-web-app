@@ -34,9 +34,9 @@ export class DataSpaceRestService extends BaseRestService {
     });
   }
 
-  public createDirectory(directoryName: string): Observable<any> {
-    const dirRequest = {name: directoryName};
-    return this.httpClient.post(this.url + '/directories/', dirRequest, {
+  public createDirectory(directoryName: string, pathToDirectory: string): Observable<any> {
+    const dirRequest = { name: directoryName, path: pathToDirectory };
+    return this.httpClient.post(this.url + '/directories', dirRequest, {
       headers: {
         AppId: 'yxcyx',
         OwnerPhoneNumber: '61290611'

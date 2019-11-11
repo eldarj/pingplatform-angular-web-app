@@ -1,13 +1,12 @@
-import {ChangeDetectorRef, Component, ViewChild} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {MatDialog, MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
 import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model';
 import {FileTypeUtils} from '../../utils/file-type/file-type.utils';
 import {DateTimeUtils} from '../../utils/date-time.utils';
-import {Subject, Subscription} from 'rxjs';
+import {Subject} from 'rxjs';
 import {DataSpaceDataService} from '../../services/data/data-space-data.service';
 import {FilePreviewDialogComponent} from './dialogs/file-preview/file-preview-dialog.component';
-import icons from '../../utils/file-type/vars/icons';
 
 @Component({
   selector: 'app-data-space-page',
@@ -89,6 +88,10 @@ export class DataSpacePageComponent {
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
+  public isDirectory(item: DataSpaceNodeModel): boolean {
+    return item.nodeType === 'Directory';
+  }
+
   public getFileLabel(fileName: string): string {
     return FileTypeUtils.getFileLabel(fileName);
   }
@@ -105,16 +108,36 @@ export class DataSpacePageComponent {
     this.dataSpaceDataService.deleteItem(item).subscribe();
   }
 
-  public openFilePreview(node: DataSpaceNodeModel): void {
+  public openDirectory(directory: DataSpaceNodeModel): void {
+    this.dataSpaceDataService.openDirectory(directory);
+  }
+
+  public openBreadcrumb(directoryName: string): void {
+    this.dataSpaceDataService.openBreadcrumb(directoryName);
+  }
+
+  public getBreadcrumbs(): string[] {
+    return [...this.dataSpaceDataService.breadcrumbManager.getBreadcrumbs().keys()];
+  }
+
+  public openFilePreview(item: DataSpaceNodeModel): void {
     const fileSubject = new Subject<any>();
     fileSubject.subscribe((loadedFileObjectUrl: string) => {
-      node.fileObjectUrl = loadedFileObjectUrl;
+      item.fileObjectUrl = loadedFileObjectUrl;
     });
 
     this.dialog.open(FilePreviewDialogComponent, {
-      data: {node, fileBlobSubject: fileSubject},
+      data: {node: item, fileBlobSubject: fileSubject},
       autoFocus: false,
       panelClass: 'file-preview-dialog'
     });
+  }
+
+  public toRoot() {
+
+  }
+
+  public toDirectory(directory: DataSpaceNodeModel) {
+
   }
 }

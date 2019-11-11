@@ -29,3 +29,20 @@ table {
   color: rgba(0, 0, 0, 0.54);
   font-size: 12px;
 }
+.breadcrumbs {
+  min-height: 36px;
+  padding: 0 8px;
+  color: rgba(0, 0, 0, 0.54);
+  font-size: 12px;
+  span.link {
+    cursor: pointer;
+    margin: 0 3.5px;
+    padding: 2.5px 7.5px;
+    border-radius: 5%;
+    transition: all .1s;
+    &:hover {
+      background: rgba(0, 0, 0, 0.12);
+      box-shadow: 0 0 2.5px 1px rgba(0, 0, 0, .05);
+    }
+  }
+}

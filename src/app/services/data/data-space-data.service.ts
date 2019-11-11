@@ -4,45 +4,41 @@ import {Observable, Subject} from 'rxjs';
 import {DataSpaceHubClientService} from '../api/signalr/data-space-hub-client.service';
 import {DataSpaceRestService} from '../api/rest/data-space-rest.service';
 import {InternalEventModel} from '../../shared/models/event/internal-event-model';
+import {BreadcrumbManager} from '../helper/breadcrumb.manager';
 
-/**
- * Wrapper for data-space rest & signalr client services
- */
 @Injectable({
   providedIn: 'root'
 })
 export class DataSpaceDataService {
   public emitter: EventEmitter<string> = new EventEmitter();
-  private nodes: DataSpaceNodeModel[] = [];
 
   public fileMetaData$ = new Subject<InternalEventModel>();
 
   constructor(
     private dataSpaceHubClientService: DataSpaceHubClientService,
-    private dataSpaceRestService: DataSpaceRestService
+    private dataSpaceRestService: DataSpaceRestService,
+    public breadcrumbManager: BreadcrumbManager
   ) {
     this.dataSpaceHubClientService.fileMetaData$.subscribe(event => {
       if (event.event === 'DeleteDirectoryMetadataSuccess' || event.event === 'DeleteFileMetadataSuccess') {
-        this.nodes = this.nodes
+        const nodes = this.breadcrumbManager.getNodes()
           .filter(node => node.path + '/' + node.name !== event.data);
+        this.breadcrumbManager.setNodes(nodes);
       } else if (event.event === 'DeleteMultipleNodesMetadataSuccess') {
         const deletedItemPaths = (event.data as DataSpaceNodeModel[]).map(item => item.path + '/' + item.name);
-        this.nodes = this.nodes
+        const nodes = this.breadcrumbManager.getNodes()
           .filter(node => deletedItemPaths.indexOf(node.path + '/' + node.name) === -1);
+        this.breadcrumbManager.setNodes(nodes);
       } else {
-        const data = event.data.map(node => {
-          node.ownerName = node.ownerFirstname + ' ' + node.ownerLastname;
-          return node;
-        });
-        this.nodes = [...data, ...this.nodes];
+        this.breadcrumbManager.setNodes([...event.data, ...this.breadcrumbManager.getNodes()]);
       }
-      this.fileMetaData$.next(new InternalEventModel('new-data', this.nodes));
+      this.fileMetaData$.next(new InternalEventModel('new-data', this.breadcrumbManager.getNodes()));
       this.emitter.emit(event.event);
     });
   }
 
   public getNodes(): DataSpaceNodeModel[] {
-    return this.nodes;
+    return this.breadcrumbManager.getNodes();
   }
 
   public uploadFiles(formData: FormData): Observable<any> {
@@ -54,9 +50,18 @@ export class DataSpaceDataService {
     return this.dataSpaceRestService.loadFile(filePath);
   }
 
-  public createDirectory(directoryPath): Observable<any> {
+  public createDirectory(directoryName: string): Observable<any> {
     this.emitter.emit('CreateDirectory');
-    return this.dataSpaceRestService.createDirectory(directoryPath);
+    return this.dataSpaceRestService.createDirectory(directoryName, this.breadcrumbManager.getPath());
+  }
+
+  public openDirectory(item: DataSpaceNodeModel): void {
+    this.fileMetaData$.next(new InternalEventModel('new-directory', item.nodes));
+    this.breadcrumbManager.openDirectory(item);
+  }
+
+  public openBreadcrumb(directoryName: string): void {
+    this.breadcrumbManager.openBreadcrumb(directoryName);
   }
 
   public deleteItems(items: DataSpaceNodeModel[]): Observable<any> {
