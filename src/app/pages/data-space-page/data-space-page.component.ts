@@ -52,7 +52,7 @@ export class DataSpacePageComponent {
         }
         case 'DownloadMultipleNodes': {
           console.log(this.selection.selected);
-          // manage api - zip multiple files or something
+          // TODO manage api - zip multiple files or something
           break;
         }
         default: {
@@ -66,47 +66,46 @@ export class DataSpacePageComponent {
       setTimeout(() => {
         this.dataSource.data = event.data;
         this.isLoading = false;
-        // this.changeDetectorRefs.detectChanges();
       }, 500);
     });
   }
 
-  public searchFilter(searchValue: string) {
+  public searchFilter(searchValue: string): void {
     this.dataSource.filter = searchValue.trim().toLowerCase();
     this.selection.deselect(...this.selection.selected.filter(
       selectedItem => this.dataSource.filteredData.indexOf(selectedItem) === -1
     ));
   }
 
-  public isAllSelected() {
+  public isAllSelected(): boolean {
     const numSelected = this.selection.selected.length;
     const numRows = this.dataSource.data.length;
     return numSelected === numRows;
   }
 
-  public masterToggle() {
+  public masterToggle(): void {
     this.isAllSelected() ?
       this.selection.clear() :
       this.dataSource.data.forEach(row => this.selection.select(row));
   }
 
-  public getFileLabel(fileName: string) {
+  public getFileLabel(fileName: string): string {
     return FileTypeUtils.getFileLabel(fileName);
   }
 
-  public getFileIcon(item?: DataSpaceNodeModel) {
+  public getFileIcon(item?: DataSpaceNodeModel): string {
     return FileTypeUtils.getIcon(item);
   }
 
-  public getHumanTimestamp(timestamp: string) {
+  public getHumanTimestamp(timestamp: string): string {
     return DateTimeUtils.formatISODate(timestamp);
   }
 
-  public deleteItem(item: DataSpaceNodeModel) {
+  public deleteItem(item: DataSpaceNodeModel): void {
     this.dataSpaceDataService.deleteItem(item).subscribe();
   }
 
-  public openFilePreview(node: DataSpaceNodeModel) {
+  public openFilePreview(node: DataSpaceNodeModel): void {
     const fileSubject = new Subject<any>();
     fileSubject.subscribe((loadedFileObjectUrl: string) => {
       node.fileObjectUrl = loadedFileObjectUrl;
@@ -117,26 +116,5 @@ export class DataSpacePageComponent {
       autoFocus: false,
       panelClass: 'file-preview-dialog'
     });
-
-    // If it not an img, vid or audio file, just display the preview without rendering any more content (icon is there by default)
-    // if (['image', 'video', 'audio'].indexOf(this.state.fileType) < 0) {
-    //   this.setState({
-    //     IsPreviewModalVisible: true
-    //   });
-    //   return;
-    // }
-
-    // Check if we already have this content fetched from API, from earlier
-    // if (this.state.contentBlob) {
-    //   this.setState({
-    //     ObjectURL: URL.createObjectURL(this.state.contentBlob),
-    //     IsPreviewModalVisible: true
-    //   });
-    //   URL.revokeObjectURL(this.state.ObjectURL);
-    //   return;
-    // }
-    //
-    // // Otherwise, display a spinner icon and fetch data from API
-    // this._fetchFromApi();
   }
 }
