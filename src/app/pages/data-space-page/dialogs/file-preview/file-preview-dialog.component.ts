@@ -55,8 +55,8 @@ export class FilePreviewDialogComponent {
     }
   }
 
-  public getFileIcon(fileName: string) {
-    return FileTypeUtils.getIcon(fileName);
+  public getFileIcon(item: DataSpaceNodeModel) {
+    return FileTypeUtils.getIcon(item);
   }
 
   public cancel(): void {
