@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Output} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {MatDialog} from '@angular/material/dialog';
 import {NewDirectoryDialogComponent} from '../dialogs/new-directory/new-directory-dialog.component';
 import {DataSpaceDataService} from '../../../services/data/data-space-data.service';
@@ -11,8 +11,13 @@ import {FileUploadOverwriteComponent} from '../dialogs/file-upload-overwrite/fil
   styleUrls: ['./data-space-navigation.component.scss']
 })
 export class DataSpaceNavigationComponent {
+  @Input() selectionLength: number;
   @Output() searchEmitter: EventEmitter<string> = new EventEmitter();
   private statusIcon: StatusEnum = StatusEnum.NONE;
+
+    get hasSelectedItems() {
+      return this.selectionLength > 0;
+    }
 
   constructor(private dialog: MatDialog, private dataSpaceDataService: DataSpaceDataService) {
     this.dataSpaceDataService.emitter.subscribe(event => {

@@ -55,6 +55,10 @@ export class FilePreviewDialogComponent {
     }
   }
 
+  public getFileIcon(fileName: string) {
+    return FileTypeUtils.getFileIcon(fileName);
+  }
+
   public cancel(): void {
     this.dialogRef.close();
   }

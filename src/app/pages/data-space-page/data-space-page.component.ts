@@ -35,7 +35,7 @@ export class DataSpacePageComponent {
 
   public isLoading = true;
 
-  public get dataSpaceEmpty() {
+  get dataSpaceEmpty() {
     return this.dataSource.data === undefined || this.dataSource.data.length < 1;
   }
 
@@ -72,6 +72,9 @@ export class DataSpacePageComponent {
 
   public searchFilter(searchValue: string) {
     this.dataSource.filter = searchValue.trim().toLowerCase();
+    this.selection.deselect(...this.selection.selected.filter(
+      selectedItem => this.dataSource.filteredData.indexOf(selectedItem) === -1
+    ));
   }
 
   public isAllSelected() {

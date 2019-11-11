@@ -23,7 +23,7 @@ export class DataSpaceDataService {
   ) {
     this.dataSpaceHubClientService.fileMetaData$.subscribe(event => {
       if (event.event === 'DeleteDirectoryMetadataSuccess' || event.event === 'DeleteFileMetadataSuccess') {
-        this.nodes = event.data
+        this.nodes = this.nodes
           .filter(node => node.path + '/' + node.name !== event.data);
       } else if (event.event === 'DeleteMultipleNodesMetadataSuccess') {
         const deletedItemPaths = (event.data as DataSpaceNodeModel[]).map(item => item.path + '/' + item.name);

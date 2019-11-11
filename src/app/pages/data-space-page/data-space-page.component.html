@@ -1,4 +1,7 @@
-<app-data-space-navigation (searchEmitter)="searchFilter($event)"></app-data-space-navigation>
+<app-data-space-navigation
+  [selectionLength]="selection.selected.length"
+  (searchEmitter)="searchFilter($event)">
+</app-data-space-navigation>
 <div class="mat-elevation-z8">
   <div class="example-loading-shade"
        *ngIf="isLoading">
@@ -86,6 +89,9 @@
           (click)="selection.toggle(row)">
       </tr>
     </table>
+    <span *ngIf="selection.selected.length > 0" class="count-span p-absolute d-flex align-items-center">
+      {{selection.selected.length}} selected
+    </span>
     <mat-paginator [length]="resultsLength" [pageSize]="30"></mat-paginator>
   </ng-template>
 </div>

@@ -7,19 +7,28 @@
   <div>
     <mat-spinner class="mat-spinner-sm" *ngIf="fileLoading && fileType !== 'video'; else filePreview"></mat-spinner>
     <ng-template #filePreview>
-      <div *ngIf="fileType === 'image'">
+      <div *ngIf="fileType === 'image'; else audioPreview">
         <img [attr.src]="filePreviewSrc" [attr.alt]="data.node.name"/>
       </div>
-      <div *ngIf="fileType === 'audio'" class="audio-wrapper ping-poster">
+    </ng-template>
+    <ng-template #audioPreview>
+      <div *ngIf="fileType === 'audio'; else videoPreview" class="audio-wrapper ping-poster">
         <audio [attr.src]="filePreviewSrc" controls autoplay></audio>
       </div>
     </ng-template>
-    <div *ngIf="fileType === 'video'" class="video-wrapper">
-      <video [attr.src]="filePreviewSrc" controls autoplay
-             poster="./assets/images/corporate/other/ping-600x335-dark.png">
-        <p>Your user agent does not support the HTML5 Video element.</p>
-      </video>
-    </div>
+    <ng-template #videoPreview>
+      <div *ngIf="fileType === 'video'; else noPreview" class="video-wrapper">
+        <video [attr.src]="filePreviewSrc" controls autoplay
+               poster="./assets/images/corporate/other/ping-600x335-dark.png">
+          <p>Your user agent does not support the HTML5 Video element.</p>
+        </video>
+      </div>
+    </ng-template>
+    <ng-template #noPreview>
+      <div *ngIf="fileType !== 'image'">
+        <i class="{{getFileIcon(data.node.name)}}"></i>
+      </div>
+    </ng-template>
   </div>
   <div class="preview-details">
     <div class="d-flex justify-content-between align-items-center">
