@@ -24,14 +24,17 @@ export class DataSpaceDataService {
         const nodes = this.breadcrumbManager.getNodes()
           .filter(node => node.path + '/' + node.name !== event.data);
         this.breadcrumbManager.setNodes(nodes);
+
       } else if (event.event === 'DeleteMultipleNodesMetadataSuccess') {
         const deletedItemPaths = (event.data as DataSpaceNodeModel[]).map(item => item.path + '/' + item.name);
         const nodes = this.breadcrumbManager.getNodes()
           .filter(node => deletedItemPaths.indexOf(node.path + '/' + node.name) === -1);
         this.breadcrumbManager.setNodes(nodes);
+
       } else {
         this.breadcrumbManager.setNodes([...event.data, ...this.breadcrumbManager.getNodes()]);
       }
+
       this.fileMetaData$.next(new InternalEventModel('new-data', this.breadcrumbManager.getNodes()));
       this.emitter.emit(event.event);
     });
