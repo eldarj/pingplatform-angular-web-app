@@ -17,17 +17,8 @@ export class Login2Component implements OnInit {
   baseFormHelper = new FormBaseHelper();
   generalHelper: GeneralBaseHelper;
 
-  loginForm: FormGroup;
-
   countryCodes: any[] = [];
   filteredCountryCodes: any[] = [];
-
-  formLoading = true;
-  submitLoading = false;
-
-  get f() {
-    return this.loginForm.controls;
-  }
 
   constructor(
     private fb: FormBuilder,
@@ -40,12 +31,12 @@ export class Login2Component implements OnInit {
 
   ngOnInit() {
     this.countryCodesService.getCountryCodes()
-      .pipe(finalize(() => this.formLoading = false))
+      .pipe(finalize(() => this.baseFormHelper.formLoading = false))
       .subscribe(codes => {
         this.countryCodes = this.filteredCountryCodes = codes;
       });
 
-    this.loginForm = this.fb.group({
+    this.baseFormHelper.form = this.fb.group({
       phoneNumber: ['', [
         Validators.required,
         Validators.pattern('^[0-9\ ]{6,12}$')
@@ -55,26 +46,26 @@ export class Login2Component implements OnInit {
         control => ValidatorsExistsInCollection(control, this.countryCodes.map(code => code.labelValue))
       ]]
     });
-    this.loginForm.controls.callingCode.valueChanges.subscribe(value => this.filterCountryCodes(value));
+    this.baseFormHelper.form.controls.callingCode.valueChanges.subscribe(value => this.filterCountryCodes(value));
   }
 
   onSubmit() {
-    this.loginForm.markAllAsTouched();
-    if (!this.loginForm.invalid) {
-      this.submitLoading = true;
+    this.baseFormHelper.form.markAllAsTouched();
+    if (!this.baseFormHelper.form.invalid) {
+      this.baseFormHelper.submitLoading = true;
 
-      const dialCode = this.countryCodes.find(code => code.labelValue === this.loginForm.value.callingCode).dialCode;
-      const phoneNumber = this.loginForm.value.phoneNumber.replace(/ /g, '');
+      const dialCode = this.countryCodes.find(code => code.labelValue === this.baseFormHelper.form.value.callingCode).dialCode;
+      const phoneNumber = this.baseFormHelper.form.value.phoneNumber.replace(/ /g, '');
       this.authenticationService.authenticate(dialCode + phoneNumber, 'password')
         .subscribe(
           response => {
-            this.submitLoading = false;
+            this.baseFormHelper.submitLoading = false;
             if (response.status === 200) {
               this.generalHelper.openSnackBar('Successfully logged in.');
             }
           },
           error => {
-            this.submitLoading = false;
+            this.baseFormHelper.submitLoading = false;
             let snackMessage = '';
             let snackBtnLabel = '';
             if (error.status === 403) {
