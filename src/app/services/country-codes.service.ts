@@ -25,7 +25,7 @@ export class CountryCodesService {
       const cachedCodes = localStorage.getItem(CountryCodesService.COUNTRY_CODES_CACHE_KEY);
       const expirationTimestamp = Number(localStorage.getItem(CountryCodesService.COUNTRY_CODES_CACHE_EXPIRATION_KEY));
 
-      if (cachedCodes !== null && Date.now() < expirationTimestamp + 6 * TimeUtils.DAY_IN_MILLISECONDS) {
+      if (cachedCodes !== null && expirationTimestamp < Date.now()) {
         return of(JSON.parse(localStorage.getItem(CountryCodesService.COUNTRY_CODES_CACHE_KEY)));
       } else {
         return this.loadFromApi();
@@ -41,8 +41,9 @@ export class CountryCodesService {
             {...code, labelValue: `${code.dialCode} - ${code.countryName} (${code.isoCode3})`}
           ));
 
-          localStorage.setItem(CountryCodesService.COUNTRY_CODES_CACHE_EXPIRATION_KEY, String(Date.now()));
           localStorage.setItem(CountryCodesService.COUNTRY_CODES_CACHE_KEY, JSON.stringify(codes));
+          localStorage.setItem(CountryCodesService.COUNTRY_CODES_CACHE_EXPIRATION_KEY,
+            String(Date.now() + TimeUtils.DAY_IN_MILLISECONDS));
           this.codes = codes;
 
           return codes;

@@ -20,8 +20,8 @@
           </mat-form-field>
 
           <div class="form-field-errors" [class.visible]="f.callingCode.errors && (f.callingCode.touched)">
-            <mat-error [class.visible]="f.callingCode.errors.required">Calling code is required</mat-error>
-            <mat-error [class.visible]="f.callingCode.errors.unexistingValue">Invalid calling code</mat-error>
+            <mat-error [class.visible]="f.callingCode.errors?.required">Calling code is required</mat-error>
+            <mat-error [class.visible]="f.callingCode.errors?.unexistingValue">Invalid calling code</mat-error>
           </div>
         </div>
       </div>
@@ -33,8 +33,8 @@
         </mat-form-field>
 
         <div class="form-field-errors" [class.visible]="f.phoneNumber.errors && (f.phoneNumber.touched)">
-          <mat-error [class.visible]="f.phoneNumber.errors.required">Phonenumber is required</mat-error>
-          <mat-error [class.visible]="f.phoneNumber.errors.pattern">
+          <mat-error [class.visible]="f.phoneNumber.errors?.required">Phonenumber is required</mat-error>
+          <mat-error [class.visible]="f.phoneNumber.errors?.pattern">
             Phone number can only contain digits and has to be longer than 6 or shorter than 12 digits.
           </mat-error>
         </div>
@@ -48,7 +48,7 @@
 
       <hr class="shadow-hr"/>
 
-      <div class="form-group d-flex justify-content-space-between">
+      <div class="form-group d-flex justify-content-space-between" [class.disabled]="formLoading || submitLoading">
         <button mat-stroked-button>
           <div class="d-flex align-items-center justify-content-center">
             <mat-spinner class="mat-spinner-sm mr-10" *ngIf="submitLoading"></mat-spinner>
@@ -56,7 +56,6 @@
           </div>
         </button>
         <div class="d-flex align-items-center">
-          <span class="sm mr-5"><i>...or</i></span>
           <a mat-button routerLink="/get-started/join">Create an account</a>
         </div>
       </div>

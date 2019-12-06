@@ -6,6 +6,7 @@ import {ValidatorsExistsInCollection} from '../../../shared/validators/exists-in
 import {MatSnackBar} from '@angular/material';
 import {FormBaseHelper} from '../../../shared/component-base-helpers/form.base.helper';
 import {GeneralBaseHelper} from '../../../shared/component-base-helpers/general.base.helper';
+import {AuthenticationService} from '../../../services/authentication.service';
 
 @Component({
   selector: 'app-login2',
@@ -30,14 +31,15 @@ export class Login2Component implements OnInit {
 
   constructor(
     private fb: FormBuilder,
-    private authenticationService: CountryCodesService,
+    private countryCodesService: CountryCodesService,
+    private authenticationService: AuthenticationService,
     snackbar: MatSnackBar
   ) {
     this.generalHelper = new GeneralBaseHelper(snackbar);
   }
 
   ngOnInit() {
-    this.authenticationService.getCountryCodes()
+    this.countryCodesService.getCountryCodes()
       .pipe(finalize(() => this.formLoading = false))
       .subscribe(codes => {
         this.countryCodes = this.filteredCountryCodes = codes;
@@ -57,10 +59,34 @@ export class Login2Component implements OnInit {
   }
 
   onSubmit() {
-    this.generalHelper.openSnackBar('Submit', 'hel');
     this.loginForm.markAllAsTouched();
     if (!this.loginForm.invalid) {
       this.submitLoading = true;
+
+      const dialCode = this.countryCodes.find(code => code.labelValue === this.loginForm.value.callingCode).dialCode;
+      const phoneNumber = this.loginForm.value.phoneNumber.replace(/ /g, '');
+      this.authenticationService.authenticate(dialCode + phoneNumber, 'password')
+        .subscribe(
+          response => {
+            this.submitLoading = false;
+            if (response.status === 200) {
+              this.generalHelper.openSnackBar('Successfully logged in.');
+            }
+          },
+          error => {
+            this.submitLoading = false;
+            let snackMessage = '';
+            let snackBtnLabel = '';
+            if (error.status === 403) {
+              snackMessage = 'Do you have an account? Join now';
+              snackBtnLabel = 'Signup';
+            } else {
+              snackMessage = 'Something went wron, please try again.';
+              console.error(snackMessage, error);
+            }
+            this.generalHelper.permaSnackBar(snackMessage, snackBtnLabel);
+          }
+        );
     }
   }
 

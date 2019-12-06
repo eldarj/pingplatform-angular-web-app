@@ -7,6 +7,8 @@ import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SharedComponentsModule} from './shared/components/shared-components.module';
 import {CookieService} from 'ngx-cookie-service';
 import {FacebookModule} from 'ngx-facebook';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HttpInterceptorService} from './utils/interceptors/http-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,10 @@ import {FacebookModule} from 'ngx-facebook';
     SharedComponentsModule,
     FacebookModule.forRoot()
   ],
-  providers: [CookieService],
+  providers: [
+    CookieService,
+    { provide: HTTP_INTERCEPTORS, useClass: HttpInterceptorService, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {
