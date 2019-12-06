@@ -24,8 +24,8 @@ export class DataSpaceRestService extends BaseRestService {
       });
   }
 
-  public uploadFiles(formData: FormData) {
-    return this.httpClient.post(this.url + '/files', formData, {
+  public uploadFiles(formData: FormData, path: string) {
+    return this.httpClient.post(this.url + '/files' + path, formData, {
       headers: {
         AppId: 'yxcyx',
         OwnerPhoneNumber: '61290611'
@@ -34,8 +34,9 @@ export class DataSpaceRestService extends BaseRestService {
     });
   }
 
-  public createDirectory(directoryName: string, pathToDirectory: string): Observable<any> {
-    const dirRequest = { name: directoryName, path: pathToDirectory };
+  public createDirectory(directoryName: string, path: string): Observable<any> {
+    const dirRequest = { name: directoryName, path };
+    console.log(dirRequest);
     return this.httpClient.post(this.url + '/directories', dirRequest, {
       headers: {
         AppId: 'yxcyx',

@@ -1,6 +1,6 @@
 export class DataSpaceNodeModel {
-  public name: string;
-  public path: string;
+  public name = '';
+  public path = '';
   public url: string;
 
   public ownerFirstname: string;

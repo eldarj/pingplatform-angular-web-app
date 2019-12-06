@@ -26,6 +26,7 @@ export class DataSpaceHubClientService extends BaseHubClientService {
 
   doRegisterHubClientHandlers(): void {
     super.hubClient.on(`RequestFilesMetaDataSuccess`, (result: { nodes: any[] }) => {
+      console.log(result);
       this.fileMetaData$.next(new InternalEventModel ('RequestFilesMetaDataSuccess', result.nodes));
     });
     super.hubClient.on('SaveDirectoryMetadataSuccess', (result: DataSpaceNodeModel) => {

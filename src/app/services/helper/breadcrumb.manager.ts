@@ -6,7 +6,7 @@ import {DataSpaceNodeModel} from '../../shared/models/data/data-space-node.model
 })
 export class BreadcrumbManager {
   private breadcrumbs: Map<string, DataSpaceNodeModel> = new Map();
-  private parentNode: DataSpaceNodeModel = undefined;
+  private parentNodeName: string = null;
   private currentNode: DataSpaceNodeModel;
 
   constructor() {
@@ -15,7 +15,11 @@ export class BreadcrumbManager {
   }
 
   public getPath(): string {
-    return this.currentNode.path;
+    console.log(this.currentNode);
+    const path = this.currentNode.path + this.currentNode.name;
+    console.log(this.currentNode.path);
+    console.log(path);
+    return path;
   }
 
   public getBreadcrumbs(): Map<string, DataSpaceNodeModel> {
@@ -31,12 +35,9 @@ export class BreadcrumbManager {
   }
 
   public openDirectory(directory: DataSpaceNodeModel): void {
-    this.parentNode = this.currentNode;
+    this.parentNodeName = this.currentNode.name;
     this.currentNode = directory;
-    this.breadcrumbs[directory.name] = directory;
-    this.breadcrumbs = new Map(
-      [...this.breadcrumbs.values()].map(node => [node.name, node])
-    );
+    this.breadcrumbs.set(directory.name, directory);
   }
 
   public openBreadcrumb(directoryName: string): void {
@@ -45,7 +46,7 @@ export class BreadcrumbManager {
     const parentIndex: number = [...this.breadcrumbs.keys()]
       .findIndex(breadcrumbName => breadcrumbName === directoryName) - 1;
     if (parentIndex >= 0) {
-      this.parentNode = [...this.breadcrumbs.values()][parentIndex];
+      this.parentNodeName = [...this.breadcrumbs.values()][parentIndex].name;
     }
 
     this.breadcrumbs = new Map<string, DataSpaceNodeModel>(
@@ -54,6 +55,6 @@ export class BreadcrumbManager {
   }
 
   public back(): void {
-    this.currentNode = this.parentNode;
+    this.openBreadcrumb(this.parentNodeName);
   }
 }

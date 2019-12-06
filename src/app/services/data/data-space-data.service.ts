@@ -11,7 +11,6 @@ import {BreadcrumbManager} from '../helper/breadcrumb.manager';
 })
 export class DataSpaceDataService {
   public emitter: EventEmitter<string> = new EventEmitter();
-
   public fileMetaData$ = new Subject<InternalEventModel>();
 
   constructor(
@@ -40,13 +39,9 @@ export class DataSpaceDataService {
     });
   }
 
-  public getNodes(): DataSpaceNodeModel[] {
-    return this.breadcrumbManager.getNodes();
-  }
-
   public uploadFiles(formData: FormData): Observable<any> {
     this.emitter.emit('UploadFile');
-    return this.dataSpaceRestService.uploadFiles(formData);
+    return this.dataSpaceRestService.uploadFiles(formData, this.breadcrumbManager.getPath());
   }
 
   public loadFile(filePath): Observable<any> {
@@ -56,15 +51,6 @@ export class DataSpaceDataService {
   public createDirectory(directoryName: string): Observable<any> {
     this.emitter.emit('CreateDirectory');
     return this.dataSpaceRestService.createDirectory(directoryName, this.breadcrumbManager.getPath());
-  }
-
-  public openDirectory(item: DataSpaceNodeModel): void {
-    this.fileMetaData$.next(new InternalEventModel('new-directory', item.nodes));
-    this.breadcrumbManager.openDirectory(item);
-  }
-
-  public openBreadcrumb(directoryName: string): void {
-    this.breadcrumbManager.openBreadcrumb(directoryName);
   }
 
   public deleteItems(items: DataSpaceNodeModel[]): Observable<any> {

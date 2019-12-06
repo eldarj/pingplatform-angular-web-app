@@ -4,6 +4,7 @@ import {NewDirectoryDialogComponent} from '../dialogs/new-directory/new-director
 import {DataSpaceDataService} from '../../../services/data/data-space-data.service';
 import {StatusEnum} from '../../../shared/models/enums/status.enum';
 import {FileUploadOverwriteComponent} from '../dialogs/file-upload-overwrite/file-upload-overwrite.component';
+import {BreadcrumbManager} from '../../../services/helper/breadcrumb.manager';
 
 @Component({
   selector: 'app-data-space-navigation',
@@ -19,7 +20,9 @@ export class DataSpaceNavigationComponent {
       return this.selectionLength > 0;
     }
 
-  constructor(private dialog: MatDialog, private dataSpaceDataService: DataSpaceDataService) {
+  constructor(private dialog: MatDialog,
+              private dataSpaceDataService: DataSpaceDataService,
+              private breadcrumbManager: BreadcrumbManager) {
     this.dataSpaceDataService.emitter.subscribe(event => {
       switch (event) {
         case 'CreateDirectory' || 'DeleteDirectory' || 'DeleteFile' || 'UploadFile' || 'DeleteMultipleNodes' || 'DownloadMultipleNodes': {
@@ -70,7 +73,7 @@ export class DataSpaceNavigationComponent {
     const filesToOverwrite: File[] = [];
 
     Array.from<File>(event.target.files).forEach(file => {
-      const nodes = this.dataSpaceDataService.getNodes().map(node => node.name);
+      const nodes = this.breadcrumbManager.getNodes().map(node => node.name);
       if (nodes.indexOf(file.name) !== -1) {
         filesToOverwrite.push(file);
       } else {

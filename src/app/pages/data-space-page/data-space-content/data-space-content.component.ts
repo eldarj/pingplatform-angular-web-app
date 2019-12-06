@@ -9,6 +9,7 @@ import {FilePreviewDialogComponent} from '../dialogs/file-preview/file-preview-d
 import {ActivatedRoute} from '@angular/router';
 import {MatPaginator, MatSort, MatTableDataSource} from '@angular/material';
 import {SelectionModel} from '@angular/cdk/collections';
+import {BreadcrumbManager} from '../../../services/helper/breadcrumb.manager';
 
 @Component({
   selector: 'app-data-space-content',
@@ -47,6 +48,7 @@ export class DataSpaceContentComponent {
   constructor(
     private dialog: MatDialog,
     private dataSpaceDataService: DataSpaceDataService,
+    private breadcrumbManager: BreadcrumbManager,
     private route: ActivatedRoute,
   ) {
     const username = this.route.snapshot.paramMap.get('username');
@@ -73,11 +75,7 @@ export class DataSpaceContentComponent {
     });
 
     this.dataSpaceDataService.fileMetaData$.subscribe(event => {
-      this.isLoading = true;
-      setTimeout(() => {
-        this.dataSource.data = event.data;
-        this.isLoading = false;
-      }, 500);
+      this.onDataChange(event.data);
     });
   }
 
@@ -114,15 +112,24 @@ export class DataSpaceContentComponent {
   }
 
   openDirectory(directory: DataSpaceNodeModel): void {
-    this.dataSpaceDataService.openDirectory(directory);
+    this.onDataChange(directory.nodes);
+    this.breadcrumbManager.openDirectory(directory);
+  }
+
+  private onDataChange(data) {
+    this.isLoading = true;
+    setTimeout(() => {
+      this.dataSource.data = data;
+      this.isLoading = false;
+    }, 500);
   }
 
   openBreadcrumb(directoryName: string): void {
-    this.dataSpaceDataService.openBreadcrumb(directoryName);
+    this.breadcrumbManager.openBreadcrumb(directoryName);
   }
 
   getBreadcrumbs(): string[] {
-    return [...this.dataSpaceDataService.breadcrumbManager.getBreadcrumbs().keys()];
+    return [...this.breadcrumbManager.getBreadcrumbs().keys()];
   }
 
   openFilePreview(item: DataSpaceNodeModel): void {

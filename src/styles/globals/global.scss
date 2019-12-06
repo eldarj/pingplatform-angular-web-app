@@ -21,6 +21,24 @@
   }
 }
 
+.form-field-errors {
+  visibility: hidden;
+  font-size: 12px;
+  padding-left: 6px;
+  .mat-error {
+    visibility: hidden;
+  }
+
+  &.visible {
+    visibility: visible;
+    .mat-error {
+      &.visible {
+        visibility: visible;
+      }
+    }
+  }
+}
+
 .mat-btn-icon {
   &.mat-button {
     padding-left: 10px;

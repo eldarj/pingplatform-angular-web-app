@@ -6,6 +6,7 @@ import {AppComponent} from './app.component';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {SharedComponentsModule} from './shared/components/shared-components.module';
 import {CookieService} from 'ngx-cookie-service';
+import {FacebookModule} from 'ngx-facebook';
 
 @NgModule({
   declarations: [
@@ -15,7 +16,8 @@ import {CookieService} from 'ngx-cookie-service';
     BrowserModule,
     BrowserAnimationsModule,
     AppRoutingModule,
-    SharedComponentsModule
+    SharedComponentsModule,
+    FacebookModule.forRoot()
   ],
   providers: [CookieService],
   bootstrap: [AppComponent]

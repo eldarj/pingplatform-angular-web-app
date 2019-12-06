@@ -1,7 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {
-  MAT_DIALOG_DEFAULT_OPTIONS,
+  MAT_DIALOG_DEFAULT_OPTIONS, MatAutocompleteModule,
   MatButtonModule,
   MatCheckboxModule, MatChipsModule, MatDialogConfig, MatDialogModule, MatDividerModule,
   MatFormFieldModule,
@@ -32,6 +32,7 @@ import {
     MatSortModule,
     MatChipsModule,
     MatDialogModule,
+    MatAutocompleteModule,
   ],
   exports: [
     MatToolbarModule,
@@ -50,6 +51,7 @@ import {
     MatSortModule,
     MatChipsModule,
     MatDialogModule,
+    MatAutocompleteModule,
   ],
   providers: [
     {

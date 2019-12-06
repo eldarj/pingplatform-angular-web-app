@@ -3,6 +3,7 @@ import {MatDialog, MatDialogRef} from '@angular/material';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {DataSpaceDataService} from '../../../../services/data/data-space-data.service';
 import {OverwriteDirectoryDialogComponent} from '../overwrite-directory/overwrite-directory-dialog.component';
+import {BreadcrumbManager} from '../../../../services/helper/breadcrumb.manager';
 
 @Component({
   selector: 'app-new-directory',
@@ -15,6 +16,7 @@ export class NewDirectoryDialogComponent {
   constructor(
     private dialogRef: MatDialogRef<NewDirectoryDialogComponent>,
     private dataSpaceDataService: DataSpaceDataService,
+    private breadcrumbManager: BreadcrumbManager,
     private dialog: MatDialog,
     private fb: FormBuilder
   ) {
@@ -35,7 +37,7 @@ export class NewDirectoryDialogComponent {
     const directoryName = this.form.value.directoryName;
 
     if (!!directoryName) {
-      const dataSpaceNodeModel = this.dataSpaceDataService.getNodes()
+      const dataSpaceNodeModel = this.breadcrumbManager.getNodes()
         .find(node => node.name === directoryName && node.nodeType === 'Directory');
 
       if (!!dataSpaceNodeModel) {
