@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AccountModel} from '../../shared/models/data/account.model';
 import {DateTimeUtils} from '../../utils/date-time.utils';
+import {ProfileService} from '../../services/profile.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -9,6 +10,11 @@ import {DateTimeUtils} from '../../utils/date-time.utils';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
+  public userAccount: any = null;
+  public routeUsername: string;
+
+
+  // old
   private username: string;
   public account: AccountModel;
 
@@ -30,18 +36,36 @@ export class ProfilePageComponent implements OnInit {
     };
   }
 
-  constructor(private route: ActivatedRoute) {
-    this.route.params.subscribe(params => this.username = params.username);
+  constructor(private route: ActivatedRoute, private profileService: ProfileService) {
+    this.route.params.subscribe(params => {
+      this.username = params.username;
+      console.log(params);
+    });
+    if (history.state.data != null) {
+      this.userAccount = history.state.data;
+    } else {
+      this.profileService.getProfile(this.username).subscribe(result => {
+        console.log(result);
+        this.userAccount = result;
+      }, console.log);
+    }
+
+    console.log(this.userAccount);
   }
 
   ngOnInit(): void {
+    this.setFakeData();
+  }
+
+  private setFakeData() {
     const account = new AccountModel();
-    account.avatarImageUrl = 'https://localhost:44380/users/avatars/62005152_68641834_1349232221893366_5220624664883101696_n_4763.jpg';
+    account.avatarImageUrl =
+      'https://img.freepik.com/free-vector/abstract-dynamic-pattern-wallpaper-vector_53876-59131.jpg?size=338&ext=jpg';
     account.callingCountryCode = 1;
     account.contacts = [
       {
         accountId: 0,
-        avatarImageUrl: 'https://localhost:44380/users/avatars/62154973_download_6ea8.png',
+        avatarImageUrl: 'https://img.freepik.com/free-vector/abstract-dynamic-pattern-wallpaper-vector_53876-59131.jpg?size=338&ext=jpg',
         callingCountryCode: 0,
         contactAccountId: 17,
         contactCallingCountryCode: 0,
@@ -54,7 +78,7 @@ export class ProfilePageComponent implements OnInit {
         phoneNumber: null
       }
     ];
-    account.coverImageUrl = 'https://localhost:44380/users/covers/62005152_interstellar_holy_shit_shot.0_ee81.jpg';
+    account.coverImageUrl = 'https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__340.jpg';
     account.createSession = true;
     account.dateRegistered = '2019-06-23T20:42:06.352837';
     account.email = null;
@@ -62,11 +86,8 @@ export class ProfilePageComponent implements OnInit {
     account.lastname = 'Jahijagic';
     account.id = 0;
     account.phoneNumber = '62005152';
-    account.token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiI2MjAwNTE1MiIsIm5iZiI6MTU3MjI5NTg0MywiZXhwIjoxNTcyOTAwNjQzLCJpYXQiOjE1NzIyOTU4NDN9.quUVK7-A94F70wNU2lnAlwgzJyESZsILePRhV8tXqnM';
+    account.token = '';
 
     this.account = account;
-
-    console.log(account);
   }
-
 }

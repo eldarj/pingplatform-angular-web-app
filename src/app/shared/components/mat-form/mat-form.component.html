@@ -1,0 +1,36 @@
+<div class="login-form box-shadow-sm mt-50 p-25">
+  <form [formGroup]="baseFormHelper.form" (ngSubmit)="submitEvent.emit()">
+
+    <!-- FORM HEADER -->
+    <div class="form-header">
+      <div class="d-flex justify-content-space-between align-items-center">
+        <span>{{title}}</span>
+        <mat-spinner class="mat-spinner-sm" *ngIf="baseFormHelper.formLoading"></mat-spinner>
+      </div>
+    </div>
+    <!-- END OF FORM HEADER -->
+
+    <!-- FORM BODY -->
+    <ng-content select="[form-body]"></ng-content>
+    <!-- END OF FORM BODY -->
+
+    <hr class="shadow-hr"/>
+
+    <!-- FORM FOOTER -->
+    <div class="form-group d-flex justify-content-space-between"
+         [class.disabled]="baseFormHelper.formLoading || baseFormHelper.submitLoading">
+      <button mat-stroked-button>
+        <div class="d-flex align-items-center justify-content-center">
+          <mat-spinner class="mat-spinner-sm mr-10" *ngIf="baseFormHelper.submitLoading"></mat-spinner>
+          <span>{{submitLabel}}</span>
+        </div>
+      </button>
+
+      <div class="d-flex align-items-center">
+        <button mat-button (click)="actionEvent.emit()">{{actionLabel}}</button>
+      </div>
+    </div>
+    <!-- END OF FORM FOOTER -->
+
+  </form>
+</div>

@@ -1,4 +1,22 @@
 <div>
+  Real data
+  <p>Avatar: {{userAccount.avatarUrl}}</p>
+  <p>Cover: {{userAccount.coverUrl}}</p>
+  <p>CountryId: {{userAccount.countryCode.id}}</p>
+  <p>Country: {{userAccount.countryCode.countryName}}</p>
+  <p>DialCode: {{userAccount.countryCode.dialCode}}</p>
+  <p>Iso: {{userAccount.countryCode.isoCode2}}</p>
+  <p>Iso: {{userAccount.countryCode.isoCode3}}</p>
+  <p>Email: {{userAccount.email}}</p>
+  <p>Firstname: {{userAccount.firstName}}</p>
+  <p>Lastname: {{userAccount.lastName}}</p>
+  <p>Id: {{userAccount.id}}</p>
+  <p>Joined: {{userAccount.instantJoined}}</p>
+  <p>Password: {{userAccount.password}}</p>
+  <p>Phone: {{userAccount.phoneNumber}}</p>
+  <p>Username: {{userAccount.screenName}}</p>
+  <hr>
+  Fake data
   <div class="cover-img-container">
     <div class="cover-img"
          [ngStyle]="avatarStyles">
