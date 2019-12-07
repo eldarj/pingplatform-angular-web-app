@@ -3,41 +3,35 @@ import {FormBuilder, Validators} from '@angular/forms';
 import {CountryCodesService} from '../../../services/country-codes.service';
 import {finalize} from 'rxjs/operators';
 import {ValidatorsExistsInCollection} from '../../../shared/validators/exists-in-collection.validator';
-import {MatSnackBar} from '@angular/material';
-import {FormBaseHelper} from '../../../shared/component-base-helpers/form.base.helper';
-import {GeneralBaseHelper} from '../../../shared/component-base-helpers/general.base.helper';
 import {AuthenticationService} from '../../../services/authentication.service';
 import {Router} from '@angular/router';
+import {SnackbarService} from '../../../services/snackbar.service';
+import {FormBaseHelper} from '../../../shared/components/helper/form.base.helper';
 
 @Component({
   selector: 'app-login2',
-  templateUrl: './login.component.html',
-  styleUrls: ['./login.component.scss']
+  templateUrl: './login.component.html'
 })
 export class Login2Component implements OnInit {
   baseFormHelper = new FormBaseHelper();
-  generalHelper: GeneralBaseHelper;
-
-
-
   countryCodes: any[] = [];
-  filteredCountryCodes: any[] = [];
+  autocompleteCountryCodes: any[] = [];
 
   constructor(
     private fb: FormBuilder,
     private countryCodesService: CountryCodesService,
     private authenticationService: AuthenticationService,
     private router: Router,
-    snackbar: MatSnackBar
+    private snackbarService: SnackbarService
   ) {
-    this.generalHelper = new GeneralBaseHelper(snackbar);
   }
 
   ngOnInit() {
     this.countryCodesService.getCountryCodes()
       .pipe(finalize(() => this.baseFormHelper.formLoading = false))
       .subscribe(codes => {
-        this.countryCodes = this.filteredCountryCodes = codes;
+        this.countryCodes = codes;
+        this.autocompleteCountryCodes = codes.map(code => code.labelValue);
       });
 
     this.baseFormHelper.form = this.fb.group({
@@ -50,11 +44,6 @@ export class Login2Component implements OnInit {
         control => ValidatorsExistsInCollection(control, this.countryCodes.map(code => code.labelValue))
       ]]
     });
-    this.baseFormHelper.form.controls.callingCode.valueChanges.subscribe(value => this.filterCountryCodes(value));
-  }
-
-  doAction() {
-    this.router.navigate(['/get-started/join']);
   }
 
   doSubmit() {
@@ -70,8 +59,8 @@ export class Login2Component implements OnInit {
             this.baseFormHelper.submitLoading = false;
             if (response.status === 200) {
               console.log(response);
-              this.redirectToProfilePage(response.data);
-              this.generalHelper.openSnackBar('Successfully logged in.');
+              this.snackbarService.openSnackBar('Successfully logged in.');
+              this.router.navigate(['/profile/' + response.data.screenName], {state: {data: response.data}});
             }
           },
           error => {
@@ -85,17 +74,13 @@ export class Login2Component implements OnInit {
               snackMessage = 'Something went wron, please try again.';
               console.error(snackMessage, error);
             }
-            this.generalHelper.permaSnackBar(snackMessage, snackBtnLabel);
+            this.snackbarService.permaSnackBar(snackMessage, snackBtnLabel);
           }
         );
     }
   }
 
-  private filterCountryCodes(inputValue: string) {
-    this.filteredCountryCodes = this.countryCodes.filter(code => code.labelValue.includes(inputValue));
-  }
-
-  private redirectToProfilePage(data: any) {
-    this.router.navigate(['/profile/' + data.screenName], {state: {data}});
+  doAction() {
+    this.router.navigate(['/get-started/join']);
   }
 }

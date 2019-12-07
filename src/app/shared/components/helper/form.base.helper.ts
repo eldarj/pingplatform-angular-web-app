@@ -1,4 +1,3 @@
-import {MatSnackBar} from '@angular/material';
 import {FormGroup} from '@angular/forms';
 
 export class FormBaseHelper {
@@ -9,9 +8,5 @@ export class FormBaseHelper {
 
   public get f() {
     return this.form.controls;
-  }
-
-  public trimInput(event: any) {
-    event.target.value = event.target.value.trim();
   }
 }

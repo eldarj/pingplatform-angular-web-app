@@ -1,6 +1,10 @@
+import {Inject, Injectable} from '@angular/core';
 import {MatSnackBar} from '@angular/material';
 
-export class GeneralBaseHelper {
+@Injectable({
+  providedIn: 'root'
+})
+export class SnackbarService {
   constructor(private snackbar: MatSnackBar) {
   }
 

@@ -6,45 +6,22 @@
               (actionEvent)="doAction()">
 
   <ng-container [formGroup]="baseFormHelper.form" form-body>
-    <div class="form-group">
-      <div class="input-holder p-relative">
-        <mat-form-field appearance="outline" [attr.disabled]="baseFormHelper.formLoading">
-          <mat-label>Calling code</mat-label>
-          <input matInput formControlName="callingCode" [matAutocomplete]="auto">
-          <mat-autocomplete #auto="matAutocomplete">
-            <mat-option *ngFor="let code of filteredCountryCodes" [value]="code.labelValue">
-              <span>{{code.labelValue}}</span>
-            </mat-option>
-          </mat-autocomplete>
-        </mat-form-field>
+    <app-mat-form-autocomplete-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Calling code'"
+      [controlName]="'callingCode'"
+      [placeholder]="'387'"
+      [data]="autocompleteCountryCodes"
+      [errors]="baseFormHelper.f.callingCode.errors"></app-mat-form-autocomplete-input>
 
-        <div class="form-field-errors"
-             [class.visible]="baseFormHelper.f.callingCode.errors && (baseFormHelper.f.callingCode.touched)">
-          <mat-error [class.visible]="baseFormHelper.f.callingCode.errors?.required">
-            Calling code is required
-          </mat-error>
-          <mat-error [class.visible]="baseFormHelper.f.callingCode.errors?.unexistingValue">
-            Invalid calling code
-          </mat-error>
-        </div>
-      </div>
-    </div>
 
-    <div class="form-group">
-      <mat-form-field appearance="outline">
-        <mat-label>Phone number</mat-label>
-        <input (blur)="baseFormHelper.trimInput($event)"
-               matInput placeholder="62 005 152" formControlName="phoneNumber">
-      </mat-form-field>
-
-      <div class="form-field-errors"
-           [class.visible]="baseFormHelper.f.phoneNumber.errors && (baseFormHelper.f.phoneNumber.touched)">
-        <mat-error [class.visible]="baseFormHelper.f.phoneNumber.errors?.required">Phonenumber is required</mat-error>
-        <mat-error [class.visible]="baseFormHelper.f.phoneNumber.errors?.pattern">
-          Phone number can only contain digits and has to be longer than 6 or shorter than 12 digits.
-        </mat-error>
-      </div>
-    </div>
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Phone number'"
+      [controlName]="'phoneNumber'"
+      [placeholder]="'62 005 152'"
+      [patternError]="'Phone number can only contain digits and has to be longer than 6 or shorter than 12 digits.'"
+      [errors]="baseFormHelper.f.phoneNumber.errors"></app-mat-form-input>
 
     <hr/>
 

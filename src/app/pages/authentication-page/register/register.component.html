@@ -1,2 +1,47 @@
-<div class="login-form box-shadow-sm mt-50 p-25">
-</div>
+<app-mat-form [baseFormHelper]="baseFormHelper"
+              [title]="'Get started'"
+              [submitLabel]="'Join'"
+              (submitEvent)="doSubmit()"
+              [actionLabel]="'Back to login'"
+              (actionEvent)="doAction()">
+
+  <ng-container [formGroup]="baseFormHelper.form" form-body>
+    <app-mat-form-autocomplete-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Calling code'"
+      [controlName]="'callingCode'"
+      [placeholder]="'387'"
+      [data]="autocompleteCountryCodes"
+      [errors]="baseFormHelper.f.callingCode.errors"></app-mat-form-autocomplete-input>
+
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Phone number'"
+      [controlName]="'phoneNumber'"
+      [placeholder]="'62 005 152'"
+      [patternError]="'Phone number can only contain digits and has to be longer than 6 or shorter than 12 digits.'"
+      [errors]="baseFormHelper.f.phoneNumber.errors"></app-mat-form-input>
+
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Email'"
+      [controlName]="'email'"
+      [placeholder]="'eldar.jahijagic@ping.me'"
+      [errors]="baseFormHelper.f.email.errors"></app-mat-form-input>
+
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'First name'"
+      [controlName]="'firstname'"
+      [placeholder]="'Eldar'"
+      [errors]="baseFormHelper.f.firstname.errors"></app-mat-form-input>
+
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Last name'"
+      [controlName]="'lastname'"
+      [placeholder]="'Jahijagic'"
+      [errors]="baseFormHelper.f.lastname.errors"></app-mat-form-input>
+  </ng-container>
+
+</app-mat-form>

@@ -1,0 +1,15 @@
+<div class="form-group" [formGroup]="formGroup">
+
+  <mat-form-field appearance="outline">
+    <mat-label>{{label}}</mat-label>
+    <input (blur)="trimInput($event)"
+           matInput [placeholder]="placeholder" [formControlName]="controlName">
+  </mat-form-field>
+
+  <div class="form-field-errors" [class.visible]="errors && formGroup.get(controlName).touched">
+    <mat-error [class.visible]="errors?.required">{{label}} is required</mat-error>
+    <mat-error [class.visible]="errors?.email">Please enter a valid email</mat-error>
+    <mat-error [class.visible]="errors?.pattern">{{patternError}}</mat-error>
+  </div>
+
+</div>

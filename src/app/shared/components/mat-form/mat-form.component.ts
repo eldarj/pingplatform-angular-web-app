@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {FormBaseHelper} from '../../component-base-helpers/form.base.helper';
+import {FormBaseHelper} from '../helper/form.base.helper';
 
 @Component({
   selector: 'app-mat-form',
