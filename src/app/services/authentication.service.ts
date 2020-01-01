@@ -18,6 +18,10 @@ export class AuthenticationService {
   constructor(private cookieService: CookieService, private httpClient: HttpClient) {
   }
 
+  public getCurrentUsername(): Observable<any> {
+    return this.httpClient.get(AuthenticationService.JOIN_ENDPOINT);
+  }
+
   public getToken() {
     if (this.token !== null) {
       return this.token;

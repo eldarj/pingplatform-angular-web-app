@@ -12,8 +12,7 @@ export class DataSpaceService {
   constructor(private httpClient: HttpClient) {
   }
 
-  public getNodes(username: string = null, path: string = null): Observable<any> {
-    const endpointPath = username === null ? '' : path === null ? username : username + '/' + path;
-    return this.httpClient.get(DATA_SPACE_ENDPOINT + endpointPath);
+  public getNodes(path: string): Observable<any> {
+    return this.httpClient.get(DATA_SPACE_ENDPOINT + path);
   }
 }

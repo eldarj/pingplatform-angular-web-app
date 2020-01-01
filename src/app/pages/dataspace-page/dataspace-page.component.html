@@ -1,1 +1,7 @@
-<div>Dataspace</div>
+<div>{{node.name}}</div>
+<div (click)="back()" *ngIf="displayBack">Back</div>
+<ul>
+  <li *ngFor="let node of childNodes" (click)="getNodes(node)">
+    {{node.name}}
+  </li>
+</ul>

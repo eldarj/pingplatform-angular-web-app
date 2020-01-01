@@ -11,7 +11,7 @@ export class BreadcrumbManager {
 
   constructor() {
     this.currentNode = new DataSpaceNodeModel();
-    this.currentNode.nodes = [];
+    this.currentNode.childNodes = [];
   }
 
   public getPath(): string {
@@ -27,7 +27,7 @@ export class BreadcrumbManager {
   }
 
   public setNodes(nodes: DataSpaceNodeModel[]) {
-    this.currentNode.nodes = nodes;
+    this.currentNode.childNodes = nodes;
   }
 
   public getNodes(): DataSpaceNodeModel[] {
