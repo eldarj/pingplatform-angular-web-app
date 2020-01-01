@@ -4,7 +4,7 @@ import {AccountModel} from '../../shared/models/data/account.model';
 import {DateTimeUtils} from '../../utils/date-time.utils';
 import {ProfileService} from '../../services/profile.service';
 import {DefaultValuesUtils} from '../../utils/default-values.utils';
-import {FileUploadOverwriteComponent} from '../data-space-page/dialogs/file-upload-overwrite/file-upload-overwrite.component';
+import {DataSpaceService} from '../../services/data-space.service';
 
 @Component({
   selector: 'app-profile-page',
@@ -29,7 +29,7 @@ export class ProfilePageComponent implements OnInit {
 
   public loadingCover = true;
 
-  constructor(private route: ActivatedRoute, private profileService: ProfileService) {
+  constructor(private route: ActivatedRoute, private profileService: ProfileService, private dataSpaceService: DataSpaceService) {
     this.route.params.subscribe(params => {
       console.log('PARAMS', params.username);
       this.username = params.username;
@@ -52,68 +52,31 @@ export class ProfilePageComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.setFakeData();
   }
 
   public coverUploadFileSelected(event: any) {
-    const formData = new FormData();
-
-    Array.from<File>(event.target.files).forEach(file => {
-      formData.append('multipartFile', file, file.name);
-    });
-
-    this.profileService.uploadCoverImage(formData).subscribe(result => {
-      if (result.path) {
-        this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.path;
+    this.profileService.uploadCoverImage(this.prepareFormData(event)).subscribe(result => {
+      if (result.dataSpaceNode.path && result.dataSpaceNode.name) {
+        this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.dataSpaceNode.path + '/' + result.dataSpaceNode.name;
       }
     }, console.log);
   }
 
   public avatarUploadFileSelected(event: any) {
+    this.profileService.uploadAvatarImage(this.prepareFormData(event)).subscribe(result => {
+      if (result.dataSpaceNode.path && result.dataSpaceNode.name) {
+        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.dataSpaceNode.path + '/' + result.dataSpaceNode.name;
+      }
+    }, console.log);
+  }
+
+  private prepareFormData(event: any) {
     const formData = new FormData();
 
     Array.from<File>(event.target.files).forEach(file => {
       formData.append('multipartFile', file, file.name);
     });
 
-    this.profileService.uploadAvatarImage(formData).subscribe(result => {
-      if (result.path) {
-        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.path;
-      }
-    }, console.log);
-  }
-
-  private setFakeData() {
-    const account = new AccountModel();
-    account.avatarImageUrl =
-      'https://img.freepik.com/free-vector/abstract-dynamic-pattern-wallpaper-vector_53876-59131.jpg?size=338&ext=jpg';
-    account.callingCountryCode = 1;
-    account.contacts = [
-      {
-        accountId: 0,
-        avatarImageUrl: 'https://img.freepik.com/free-vector/abstract-dynamic-pattern-wallpaper-vector_53876-59131.jpg?size=338&ext=jpg',
-        callingCountryCode: 0,
-        contactAccountId: 17,
-        contactCallingCountryCode: 0,
-        contactName: 'mama',
-        contactPhoneNumber: '62154973',
-        coverImageUrl: null,
-        dateAdded: '2019-07-26T22:43:40.256822',
-        messages: null,
-        isFavorite: false,
-        phoneNumber: null
-      }
-    ];
-    account.coverImageUrl = 'https://cdn.pixabay.com/photo/2018/01/14/23/12/nature-3082832__340.jpg';
-    account.createSession = true;
-    account.dateRegistered = '2019-06-23T20:42:06.352837';
-    account.email = null;
-    account.firstName = 'Eldar';
-    account.lastName = 'Jahijagic';
-    account.id = 0;
-    account.phoneNumber = '62005152';
-    account.token = '';
-
-    this.account = account;
+    return formData;
   }
 }
