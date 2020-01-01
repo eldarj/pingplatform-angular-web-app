@@ -41,7 +41,7 @@ export class Login2Component implements OnInit {
       ]],
       callingCode: ['', [
         Validators.required,
-        control => ValidatorsExistsInCollection(control, this.countryCodes.map(code => code.labelValue))
+        control => ValidatorsExistsInCollection(control, this.autocompleteCountryCodes)
       ]]
     });
   }
@@ -57,10 +57,9 @@ export class Login2Component implements OnInit {
         .subscribe(
           response => {
             this.baseFormHelper.submitLoading = false;
-            if (response.status === 200) {
-              console.log(response);
+            if (response != null) {
               this.snackbarService.openSnackBar('Successfully logged in.');
-              this.router.navigate(['/profile/' + response.data.screenName], {state: {data: response.data}});
+              this.router.navigate(['/profile/' + response.username], {state: {data: response.data}});
             }
           },
           error => {

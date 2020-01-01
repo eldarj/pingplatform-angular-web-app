@@ -9,6 +9,8 @@ import {CookieService} from 'ngx-cookie-service';
 })
 export class AuthenticationService {
   private static TOKEN_CACHE_KEY = 'tokenCacheKey';
+
+  private static JOIN_ENDPOINT = 'http://localhost:8089/api/join';
   private static AUTHENTICATION_ENDPOINT = 'http://localhost:8089/api/authenticate';
 
   private token: string = null;
@@ -24,12 +26,31 @@ export class AuthenticationService {
     }
   }
 
+  public register(newUser: any) {
+    return this.httpClient.post(AuthenticationService.JOIN_ENDPOINT, newUser,
+      {observe: 'response'}
+    ).pipe(map(
+      (response: any) => {
+        console.log(response);
+        if (response != null) {
+          const expiresInDays = 30;
+          console.log(response.body.token);
+
+          const token = response.body.token.replace('Bearer ', '');
+          this.cookieService.set(AuthenticationService.TOKEN_CACHE_KEY, token, expiresInDays);
+
+          console.log(response.body);
+          return response.body;
+        }
+      }, console.log
+    ));
+  }
+
   //
   // Authenticates user, and if successfully, stores token in cache
   //
   public authenticate(phoneNumber, password): Observable<any> {
-    return this.httpClient.post(AuthenticationService.AUTHENTICATION_ENDPOINT,
-      {phoneNumber, password},
+    return this.httpClient.post(AuthenticationService.AUTHENTICATION_ENDPOINT, {phoneNumber, password},
       {observe: 'response'}
     ).pipe(map(
       (response: any) => {
@@ -38,7 +59,7 @@ export class AuthenticationService {
           const token = response.headers.get('authorization').replace('Bearer ', '');
           this.cookieService.set(AuthenticationService.TOKEN_CACHE_KEY, token, expiresInDays);
 
-          return {status: 200, data: JSON.parse(response.body.content)};
+          return JSON.parse(response.body.content);
         }
       }
     ));

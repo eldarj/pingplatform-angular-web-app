@@ -52,7 +52,7 @@ export class LoginComponent implements OnInit {
       if (result.messageCode !== '401') {
         this.openSnackBar(result.message);
 
-        const username = result.content.firstname + '-' + result.content.lastname;
+        const username = result.content.firstName + '-' + result.content.lastName;
         this.router.navigate(['/profile', username]);
       } else {
         this.openSnackBar(result.message);

@@ -3,6 +3,8 @@ import {ActivatedRoute} from '@angular/router';
 import {AccountModel} from '../../shared/models/data/account.model';
 import {DateTimeUtils} from '../../utils/date-time.utils';
 import {ProfileService} from '../../services/profile.service';
+import {DefaultValuesUtils} from '../../utils/default-values.utils';
+import {FileUploadOverwriteComponent} from '../data-space-page/dialogs/file-upload-overwrite/file-upload-overwrite.component';
 
 @Component({
   selector: 'app-profile-page',
@@ -10,8 +12,11 @@ import {ProfileService} from '../../services/profile.service';
   styleUrls: ['./profile-page.component.scss']
 })
 export class ProfilePageComponent implements OnInit {
-  public userAccount: any = null;
+  public userAccount: any = {};
   public routeUsername: string;
+
+  public profileSrc = DefaultValuesUtils.PROFILE_SRC;
+  public coverSrc = DefaultValuesUtils.COVER_SRC;
 
 
   // old
@@ -24,37 +29,45 @@ export class ProfilePageComponent implements OnInit {
 
   public loadingCover = true;
 
-  public get avatarStyles() {
-    return {
-      'background-image': 'url(\'' + this.account.avatarImageUrl + '\')'
-    };
-  }
-
-  public get coverStyles() {
-    return {
-      'background-image': 'url(\'' + this.account.coverImageUrl + '\')'
-    };
-  }
-
   constructor(private route: ActivatedRoute, private profileService: ProfileService) {
     this.route.params.subscribe(params => {
+      console.log('PARAMS', params.username);
       this.username = params.username;
-      console.log(params);
     });
     if (history.state.data != null) {
       this.userAccount = history.state.data;
     } else {
       this.profileService.getProfile(this.username).subscribe(result => {
+        console.log('POFILE SERVICE');
         console.log(result);
         this.userAccount = result;
+        if (this.userAccount.avatarUrl) {
+          this.profileSrc = this.userAccount.avatarUrl;
+        }
       }, console.log);
     }
-
-    console.log(this.userAccount);
   }
 
   ngOnInit(): void {
     this.setFakeData();
+  }
+
+
+  public avatarUploadFileSelected(event: any) {
+    const formData = new FormData();
+
+    Array.from<File>(event.target.files).forEach(file => {
+      formData.append('avatarMultipartFile', file, file.name);
+    });
+
+    console.log(event);
+    console.log(formData);
+    this.profileService.uploadProfile(formData).subscribe(result => {
+      console.log(result);
+      if (result.avatarPath) {
+        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.avatarPath;
+      }
+    }, console.log);
   }
 
   private setFakeData() {
@@ -82,8 +95,8 @@ export class ProfilePageComponent implements OnInit {
     account.createSession = true;
     account.dateRegistered = '2019-06-23T20:42:06.352837';
     account.email = null;
-    account.firstname = 'Eldar';
-    account.lastname = 'Jahijagic';
+    account.firstName = 'Eldar';
+    account.lastName = 'Jahijagic';
     account.id = 0;
     account.phoneNumber = '62005152';
     account.token = '';

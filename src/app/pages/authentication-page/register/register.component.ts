@@ -30,7 +30,7 @@ export class Register2Component implements OnInit {
     this.countryCodesService.getCountryCodes()
       .pipe(finalize(() => this.baseFormHelper.formLoading = false))
       .subscribe(codes => {
-        this.countryCodes = codes.map(code => code.labelValue);
+        this.countryCodes = codes;
         this.autocompleteCountryCodes = codes.map(code => code.labelValue);
       });
 
@@ -40,21 +40,51 @@ export class Register2Component implements OnInit {
         Validators.pattern('^[0-9\ ]{6,12}$')
       ]],
       email: ['', [Validators.required, Validators.email]],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      username: ['', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z]{3,25}$')
+      ]],
+      password: ['', [
+        Validators.required,
+        Validators.pattern('^[a-zA-Z0-9#!%&=]{6,50}$')
+      ]],
       callingCode: ['', [
         Validators.required,
-        control => ValidatorsExistsInCollection(control, this.countryCodes)
+        control => ValidatorsExistsInCollection(control, this.autocompleteCountryCodes)
       ]]
     });
 
   }
 
   doAction() {
-
+    this.router.navigate(['/get-started/join']);
   }
 
   doSubmit() {
-    console.log(this.baseFormHelper.form.value);
+    this.baseFormHelper.form.markAllAsTouched();
+    if (!this.baseFormHelper.form.invalid) {
+      this.baseFormHelper.submitLoading = true;
+
+      const newUser = this.baseFormHelper.form.value;
+      newUser.countryCode = {dialCode: this.countryCodes.find(code => code.labelValue === newUser.callingCode).dialCode};
+      newUser.phoneNumber = newUser.phoneNumber.replace(/ /g, '');
+
+      this.authenticationService.register(newUser).subscribe(
+        (response: any) => {
+          this.baseFormHelper.submitLoading = false;
+          if (response != null) {
+            this.snackbarService.openSnackBar('Successfully registered.');
+            this.router.navigate(['/profile/' + response.username], {state: {data: response}});
+          }
+        },
+        error => {
+          console.error(error);
+          this.baseFormHelper.submitLoading = false;
+          this.snackbarService.permaSnackBar('Something went wrong, please try again.', 'Signup');
+        }
+      );
+    }
   }
 }

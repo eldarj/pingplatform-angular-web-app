@@ -48,14 +48,14 @@ export class AuthHubClientService extends BaseHubClientService {
     });
   }
 
-  register(phoneNumber: string, callingCountryCode: number, email: string, firstname: string, lastname: string): void {
+  register(phoneNumber: string, callingCountryCode: number, email: string, firstName: string, lastName: string): void {
     super.hubClient
       .invoke('RequestRegistration', '124', {
         phoneNumber,
         callingCountryCode,
         email,
-        firstname,
-        lastname
+        firstName,
+        lastName
       })
       .catch(AuthHubClientService.onError);
   }

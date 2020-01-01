@@ -42,8 +42,8 @@ export class RegisterComponent implements OnInit {
       phoneNumber: [this.authService.preloadedPhoneNumber, Validators.required],
       callingCode: [this.authService.preloadedCallingCountryCode, Validators.required],
       email: ['', [Validators.required, Validators.email]],
-      firstname: ['', Validators.required],
-      lastname: ['', Validators.required],
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
     });
 
     this.authService.callingCode$.subscribe(result => {
@@ -53,7 +53,7 @@ export class RegisterComponent implements OnInit {
 
     this.authService.loggedInUser$.subscribe((result: ResponseModel<AccountModel>) => {
       if (result.messageCode === '200') {
-        const username = result.content.firstname + '-' + result.content.lastname;
+        const username = result.content.firstName + '-' + result.content.lastName;
         this.router.navigate(['/profile', username]);
         this.openSnackBar(result.message);
       } else {
@@ -73,8 +73,8 @@ export class RegisterComponent implements OnInit {
         this.registerForm.value.phoneNumber,
         this.registerForm.value.callingCode,
         this.registerForm.value.email,
-        this.registerForm.value.firstname,
-        this.registerForm.value.lastname
+        this.registerForm.value.firstName,
+        this.registerForm.value.lastName
       );
     }
   }

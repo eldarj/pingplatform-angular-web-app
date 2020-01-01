@@ -20,3 +20,15 @@
   }
 }
 
+.profile-header {
+  .profile-photo-wrapper {
+    .profile-photo {
+      display: block;
+      width: 100px;
+      height: 100px;
+      background-size: cover;
+      background-position: center;
+    }
+  }
+}
+

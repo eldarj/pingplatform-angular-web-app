@@ -16,6 +16,22 @@
 
     <app-mat-form-input
       [formGroup]="baseFormHelper.form"
+      [label]="'Password'"
+      [controlName]="'password'"
+      [placeholder]="'km12#12k!'"
+      [patternError]="'Password can only contain letters, numbers, special characters [#!%&=] and has to be min. 6 or max. 50 characters long.'"
+      [errors]="baseFormHelper.f.password.errors"></app-mat-form-input>
+
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
+      [label]="'Username'"
+      [controlName]="'username'"
+      [placeholder]="'eldarja'"
+      [patternError]="'Username can only contain letters and has to be min. 3 or max. 25 characters long.'"
+      [errors]="baseFormHelper.f.username.errors"></app-mat-form-input>
+
+    <app-mat-form-input
+      [formGroup]="baseFormHelper.form"
       [label]="'Phone number'"
       [controlName]="'phoneNumber'"
       [placeholder]="'62 005 152'"
@@ -32,16 +48,16 @@
     <app-mat-form-input
       [formGroup]="baseFormHelper.form"
       [label]="'First name'"
-      [controlName]="'firstname'"
+      [controlName]="'firstName'"
       [placeholder]="'Eldar'"
-      [errors]="baseFormHelper.f.firstname.errors"></app-mat-form-input>
+      [errors]="baseFormHelper.f.firstName.errors"></app-mat-form-input>
 
     <app-mat-form-input
       [formGroup]="baseFormHelper.form"
       [label]="'Last name'"
-      [controlName]="'lastname'"
+      [controlName]="'lastName'"
       [placeholder]="'Jahijagic'"
-      [errors]="baseFormHelper.f.lastname.errors"></app-mat-form-input>
+      [errors]="baseFormHelper.f.lastName.errors"></app-mat-form-input>
   </ng-container>
 
 </app-mat-form>

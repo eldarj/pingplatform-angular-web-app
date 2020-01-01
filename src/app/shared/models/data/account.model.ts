@@ -1,8 +1,8 @@
 export class AccountModel {
   public id: number;
   public email: string;
-  public firstname: string;
-  public lastname: string;
+  public firstName: string;
+  public lastName: string;
   public callingCountryCode: number;
   public phoneNumber: string;
   public dateRegistered: any;
@@ -16,6 +16,6 @@ export class AccountModel {
   }
 
   public username() {
-    return this.firstname + '-' + this.lastname;
+    return this.firstName + '-' + this.lastName;
   }
 }
