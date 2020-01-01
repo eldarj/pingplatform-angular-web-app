@@ -1,8 +1,6 @@
-import {HttpClient, HttpHeaders} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Injectable} from '@angular/core';
-import {CookieService} from 'ngx-cookie-service';
-import {AuthenticationService} from './authentication.service';
 
 const PROFILE_ENDPOINT = 'http://localhost:8089/api/profile/';
 
@@ -18,7 +16,11 @@ export class ProfileService {
     return this.httpClient.get(PROFILE_ENDPOINT + username);
   }
 
-  public uploadProfile(formData: FormData): Observable<any> {
-    return this.httpClient.post(PROFILE_ENDPOINT, formData);
+  public uploadAvatarImage(formData: FormData): Observable<any> {
+    return this.httpClient.post(PROFILE_ENDPOINT + 'eldarja/avatars', formData);
+  }
+
+  public uploadCoverImage(formData: FormData): Observable<any> {
+    return this.httpClient.post(PROFILE_ENDPOINT + 'eldarja/covers', formData);
   }
 }

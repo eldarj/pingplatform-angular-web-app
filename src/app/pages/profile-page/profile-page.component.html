@@ -14,9 +14,9 @@
     <div>
       <div class="profile-photo" [ngStyle]="{'background-image': 'url(' + coverSrc + ')'}">
       </div>
-      <input name="avatarFile" type="file"
+      <input name="coverFile" type="file"
              accept="image/*"
-             (change)="this.onUploadAvatarSelected()"/>
+             (change)="coverUploadFileSelected($event)"/>
     </div>
   </div>
 </div>

@@ -2,6 +2,7 @@ import {NgModule} from '@angular/core';
 import {RouterModule, Routes} from '@angular/router';
 import {ProfilePageModule} from './pages/profile-page/profile-page.module';
 import {DataSpacePageModule} from './pages/data-space-page/data-space-page.module';
+import {DataspacePageModule} from './pages/dataspace-page/dataspace-page.module';
 
 const routes: Routes = [
   {
@@ -21,8 +22,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/profile-page/profile-page.module').then(m => ProfilePageModule)
   },
   {
-    path: 'data-space',
-    loadChildren: () => import('./pages/data-space-page/data-space-page.module').then(m => DataSpacePageModule)
+    path: 'dataspace',
+    loadChildren: () => import('./pages/dataspace-page/dataspace-page.module').then(m => DataspacePageModule)
   }
 ];
 

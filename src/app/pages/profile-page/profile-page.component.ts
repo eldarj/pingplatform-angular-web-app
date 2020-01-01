@@ -41,8 +41,11 @@ export class ProfilePageComponent implements OnInit {
         console.log('POFILE SERVICE');
         console.log(result);
         this.userAccount = result;
-        if (this.userAccount.avatarUrl) {
-          this.profileSrc = this.userAccount.avatarUrl;
+        if (this.userAccount.avatarPath) {
+          this.profileSrc = 'http://localhost:8089/dataspace-static/' + this.userAccount.avatarPath;
+        }
+        if (this.userAccount.coverPath) {
+          this.coverSrc = 'http://localhost:8089/dataspace-static/' + this.userAccount.coverPath;
         }
       }, console.log);
     }
@@ -52,20 +55,30 @@ export class ProfilePageComponent implements OnInit {
     this.setFakeData();
   }
 
+  public coverUploadFileSelected(event: any) {
+    const formData = new FormData();
+
+    Array.from<File>(event.target.files).forEach(file => {
+      formData.append('multipartFile', file, file.name);
+    });
+
+    this.profileService.uploadCoverImage(formData).subscribe(result => {
+      if (result.path) {
+        this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.path;
+      }
+    }, console.log);
+  }
 
   public avatarUploadFileSelected(event: any) {
     const formData = new FormData();
 
     Array.from<File>(event.target.files).forEach(file => {
-      formData.append('avatarMultipartFile', file, file.name);
+      formData.append('multipartFile', file, file.name);
     });
 
-    console.log(event);
-    console.log(formData);
-    this.profileService.uploadProfile(formData).subscribe(result => {
-      console.log(result);
-      if (result.avatarPath) {
-        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.avatarPath;
+    this.profileService.uploadAvatarImage(formData).subscribe(result => {
+      if (result.path) {
+        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.path;
       }
     }, console.log);
   }
