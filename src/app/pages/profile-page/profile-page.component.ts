@@ -1,7 +1,6 @@
-import {Component, OnInit} from '@angular/core';
+import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {AccountModel} from '../../shared/models/data/account.model';
-import {DateTimeUtils} from '../../utils/date-time.utils';
 import {ProfileService} from '../../services/profile.service';
 import {DefaultValuesUtils} from '../../utils/default-values.utils';
 import {DataSpaceService} from '../../services/data-space.service';
@@ -11,36 +10,25 @@ import {DataSpaceService} from '../../services/data-space.service';
   templateUrl: './profile-page.component.html',
   styleUrls: ['./profile-page.component.scss']
 })
-export class ProfilePageComponent implements OnInit {
+export class ProfilePageComponent {
   public userAccount: any = {};
-  public routeUsername: string;
 
-  public profileSrc = DefaultValuesUtils.PROFILE_SRC;
   public coverSrc = DefaultValuesUtils.COVER_SRC;
+  public profileSrc = DefaultValuesUtils.PROFILE_SRC;
 
 
-  // old
   private username: string;
   public account: AccountModel;
 
-  public get dateRegisteredHumanTimestamp() {
-    return DateTimeUtils.formatISODate(this.account.dateRegistered);
-  }
-
-  public loadingCover = true;
-
   constructor(private route: ActivatedRoute, private profileService: ProfileService, private dataSpaceService: DataSpaceService) {
-    console.log('PROFILE PAGE');
+    // TODO: Wait for route param sub to finish and then fetch data (display loader as well)
     this.route.params.subscribe(params => {
-      console.log('PARAMS', params.username);
       this.username = params.username;
     });
     if (history.state.data != null) {
       this.userAccount = history.state.data;
     } else {
       this.profileService.getProfile(this.username).subscribe(result => {
-        console.log('POFILE SERVICE');
-        console.log(result);
         this.userAccount = result;
         if (this.userAccount.avatarPath) {
           this.profileSrc = 'http://localhost:8089/dataspace-static/' + this.userAccount.avatarPath;
@@ -50,9 +38,6 @@ export class ProfilePageComponent implements OnInit {
         }
       }, console.log);
     }
-  }
-
-  ngOnInit(): void {
   }
 
   public coverUploadFileSelected(event: any) {
