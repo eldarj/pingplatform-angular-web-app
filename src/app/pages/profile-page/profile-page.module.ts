@@ -5,6 +5,7 @@ import {ProfilePageComponent} from './profile-page.component';
 import {MaterialModule} from '../../shared/modules/material/material.module';
 
 const routes: Routes = [
+  {path: '', component: ProfilePageComponent},
   {path: ':username', component: ProfilePageComponent}
 ];
 

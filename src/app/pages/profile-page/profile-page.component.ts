@@ -30,6 +30,7 @@ export class ProfilePageComponent implements OnInit {
   public loadingCover = true;
 
   constructor(private route: ActivatedRoute, private profileService: ProfileService, private dataSpaceService: DataSpaceService) {
+    console.log('PROFILE PAGE');
     this.route.params.subscribe(params => {
       console.log('PARAMS', params.username);
       this.username = params.username;
