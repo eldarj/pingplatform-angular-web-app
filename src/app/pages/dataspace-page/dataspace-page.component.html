@@ -5,3 +5,6 @@
     {{node.name}}
   </li>
 </ul>
+<label for="newDirectory">New directory</label>
+<input id="newDirectory" type="text" [(ngModel)]="directoryInputValue"/>
+<button (click)="createDirectory()">Create</button>

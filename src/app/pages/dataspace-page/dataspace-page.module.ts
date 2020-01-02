@@ -7,8 +7,10 @@ import {CommonSharedModule} from '../../shared/modules/common/common-shared.modu
 
 const routes: Routes = [
   {path: '', component: DataspacePageComponent},
-  {path: ':username', component: DataspacePageComponent},
-  {path: ':username/:path', component: DataspacePageComponent}
+  {path: ':username', component: DataspacePageComponent, children: [{
+      path: '**', component: DataspacePageComponent
+    }]
+  },
 ];
 
 @NgModule({
