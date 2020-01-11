@@ -28,10 +28,12 @@ export class HttpInterceptorService implements HttpInterceptor {
         return response;
       }, console.error),
       catchError((error: HttpErrorResponse) => {
-        if (error.error.reason) {
+        console.log(error);
+        if (!!error.error.reason) {
           this.snackbarService.openSnackBar(error.error.reason);
+        } else {
+          this.snackbarService.openSnackBar('Something went wrong, please try again or contact PING Support.');
         }
-        this.snackbarService.openSnackBar('Something went wrong, please try again or contact PING Support.');
         return throwError(error);
       })
     );
