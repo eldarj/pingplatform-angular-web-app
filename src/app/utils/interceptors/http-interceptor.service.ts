@@ -1,14 +1,15 @@
-import {tap} from 'rxjs/internal/operators/tap';
-import {Observable} from 'rxjs';
-import {HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
+import {Observable, throwError} from 'rxjs';
+import {HttpErrorResponse, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {map} from 'rxjs/operators';
+import {catchError, map} from 'rxjs/operators';
 import {AuthenticationService} from '../../services/authentication.service';
+import {SnackbarService} from '../../services/snackbar.service';
 
 @Injectable()
 export class HttpInterceptorService implements HttpInterceptor {
 
-  constructor(private authenticationService: AuthenticationService) {
+  constructor(private authenticationService: AuthenticationService,
+              private snackbarService: SnackbarService) {
   }
 
   intercept(request: HttpRequest<any>, next: HttpHandler): Observable<any> {
@@ -26,6 +27,13 @@ export class HttpInterceptorService implements HttpInterceptor {
         }
         return response;
       }, console.error),
+      catchError((error: HttpErrorResponse) => {
+        if (error.error.reason) {
+          this.snackbarService.openSnackBar(error.error.reason);
+        }
+        this.snackbarService.openSnackBar('Something went wrong, please try again or contact PING Support.');
+        return throwError(error);
+      })
     );
   }
 }

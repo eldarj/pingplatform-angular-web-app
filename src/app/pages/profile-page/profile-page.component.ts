@@ -41,16 +41,16 @@ export class ProfilePageComponent {
 
   coverUploadFileSelected(event: any) {
     this.profileService.uploadCoverImage(this.prepareFormData(event)).subscribe(result => {
-      if (result.dataSpaceNode.path && result.dataSpaceNode.name) {
-        this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.dataSpaceNode.path + '/' + result.dataSpaceNode.name;
+      if (result.node.path && result.node.name) {
+        this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.node.path + '/' + result.node.name;
       }
     }, console.log);
   }
 
   public avatarUploadFileSelected(event: any) {
     this.profileService.uploadAvatarImage(this.prepareFormData(event)).subscribe(result => {
-      if (result.dataSpaceNode.path && result.dataSpaceNode.name) {
-        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.dataSpaceNode.path + '/' + result.dataSpaceNode.name;
+      if (result.node.path && result.node.name) {
+        this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.node.path + '/' + result.node.name;
       }
     }, console.log);
   }
