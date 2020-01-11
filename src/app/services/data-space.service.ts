@@ -12,22 +12,36 @@ export class DataSpaceService {
   constructor(private httpClient: HttpClient) {
   }
 
+  public getFile(username: string, path: string, filename: string): Observable<any> {
+    const params = new HttpParams()
+      .set('filename', filename)
+      .set('path', path);
+
+    return this.httpClient.get(DATA_SPACE_ENDPOINT + username + '/file', {
+      params,
+      responseType: 'arraybuffer'
+    });
+  }
+
   public getNodes(username: string, path: string): Observable<any> {
     const params = new HttpParams()
       .set('path', path);
 
-    console.log(username);
-    console.log(params);
     return this.httpClient.get(DATA_SPACE_ENDPOINT + username, {params});
   }
 
-  public createNewDirectory(username: string, directoryPath: string, directoryName: string)/*: Observable<any>*/ {
-    const newDirectory = {
-      name: directoryName,
-      path: directoryPath,
-      shared: false
-    };
+  public createNewDirectory(username: string, path: string, tname: string)/*: Observable<any>*/ {
+    const newDirectory = {name, path, shared: false};
 
     return this.httpClient.post(DATA_SPACE_ENDPOINT + username + '/directory', newDirectory);
+  }
+
+  public uploadFile(username: string, path: string, formData: FormData): Observable<any> {
+    const params = new HttpParams()
+      .set('path', path);
+
+    console.log(path);
+
+    return this.httpClient.post(DATA_SPACE_ENDPOINT + username + '/file', formData, {params});
   }
 }

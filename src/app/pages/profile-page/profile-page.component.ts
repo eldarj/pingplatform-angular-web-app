@@ -1,6 +1,5 @@
 import {Component} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AccountModel} from '../../shared/models/data/account.model';
 import {ProfileService} from '../../services/profile.service';
 import {DefaultValuesUtils} from '../../utils/default-values.utils';
 import {DataSpaceService} from '../../services/data-space.service';
@@ -18,7 +17,6 @@ export class ProfilePageComponent {
 
 
   private username: string;
-  public account: AccountModel;
 
   constructor(private route: ActivatedRoute, private profileService: ProfileService, private dataSpaceService: DataSpaceService) {
     // TODO: Wait for route param sub to finish and then fetch data (display loader as well)
@@ -27,6 +25,7 @@ export class ProfilePageComponent {
     });
     if (history.state.data != null) {
       this.userAccount = history.state.data;
+
     } else {
       this.profileService.getProfile(this.username).subscribe(result => {
         this.userAccount = result;
@@ -40,7 +39,7 @@ export class ProfilePageComponent {
     }
   }
 
-  public coverUploadFileSelected(event: any) {
+  coverUploadFileSelected(event: any) {
     this.profileService.uploadCoverImage(this.prepareFormData(event)).subscribe(result => {
       if (result.dataSpaceNode.path && result.dataSpaceNode.name) {
         this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.dataSpaceNode.path + '/' + result.dataSpaceNode.name;

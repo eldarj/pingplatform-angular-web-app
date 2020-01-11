@@ -4,6 +4,8 @@ import {DataSpaceService} from '../../services/data-space.service';
 import {Location} from '@angular/common';
 import {AuthenticationService} from '../../services/authentication.service';
 import {SnackbarService} from '../../services/snackbar.service';
+import {MatDialog} from '@angular/material';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'app-dataspace-page',
@@ -16,11 +18,14 @@ export class DataspacePageComponent {
   node: any = {};
   childNodes: any[];
 
+  fileLoading = false;
+  previewObjectUrl = null;
   displayBack = false;
-
   directoryInputValue = '';
 
-  constructor(private location: Location, private route: ActivatedRoute,
+  constructor(private dialog: MatDialog,
+              private domSanitizer: DomSanitizer,
+              private location: Location, private route: ActivatedRoute,
               private dataSpaceService: DataSpaceService,
               private authenticationService: AuthenticationService,
               private snackbarService: SnackbarService) {
@@ -45,32 +50,68 @@ export class DataspacePageComponent {
     }
   }
 
+  get filePreviewSrc() {
+    return this.domSanitizer.bypassSecurityTrustResourceUrl(this.previewObjectUrl);
+  }
+
   back() {
     this.getNodes(this.node.parentNode);
   }
 
+  uploadFileSelected(event: any) {
+    this.dataSpaceService.uploadFile(this.username, this.getPath(this.node), this.prepareFormData(event)).subscribe(result => {
+      console.log(result);
+      this.childNodes.push(result.node);
+      this.snackbarService.openSnackBar('Successfully uploaded file.');
+    }, console.log);
+  }
+
   getNodes(node: any) {
+    this.location.go('/dataspace/' + this.getPath(node));
+    this.fetchNodes(this.getPath(node));
+  }
+
+  getFile(node: any) {
+    this.fileLoading = true;
+    this.dataSpaceService.getFile(this.username, this.getPath(this.node), node.name).subscribe(response => {
+      setTimeout(
+        () => {
+          node.fileObjectUrl = URL.createObjectURL(new Blob([response]));
+          this.previewObjectUrl = node.fileObjectUrl;
+          this.fileLoading = false;
+        },
+        1000
+      );
+    }, error => {
+      this.snackbarService.openSnackBar(`Couldn\'t load ${node.name}, please try again or contact PING Support.`);
+    });
+  }
+
+  createDirectory() {
+    this.dataSpaceService.createNewDirectory(this.username, this.getPath(this.node), this.directoryInputValue)
+      .subscribe((result: { node }) => {
+        this.childNodes.push(result.node);
+        this.snackbarService.openSnackBar('Successfully created new directory.');
+      }, console.log);
+  }
+
+  private getPath(node: any) {
     let path = '';
     if (node.path !== '') {
       path += node.path + '/';
     }
     path += node.name;
-
-    this.location.go('/dataspace/' + path);
-    this.fetchNodes(path);
+    return path;
   }
 
-  createDirectory() {
-    let path = '';
-    if (this.node.path !== '') {
-      path += this.node.path + '/';
-    }
-    path += this.node.name;
+  private prepareFormData(event: any) {
+    const formData = new FormData();
 
-    this.dataSpaceService.createNewDirectory(this.username, path, this.directoryInputValue).subscribe((result: {node}) => {
-      this.childNodes.push(result.node);
-      this.snackbarService.openSnackBar('Successfully created new directory.');
-    }, console.log);
+    Array.from<File>(event.target.files).forEach(file => {
+      formData.append('multipartFile', file, file.name);
+    });
+
+    return formData;
   }
 
   private fetchNodes(path: string) {

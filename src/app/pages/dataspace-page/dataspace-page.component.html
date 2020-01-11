@@ -1,10 +1,17 @@
 <div>{{node.name}}</div>
 <div (click)="back()" *ngIf="displayBack">Back</div>
 <ul>
-  <li *ngFor="let node of childNodes" (click)="getNodes(node)">
-    {{node.name}}
+  <li *ngFor="let node of childNodes">
+    <span (click)="node.asDirectory ? getNodes(node) : getFile(node)">{{node.name}}</span>
   </li>
 </ul>
 <label for="newDirectory">New directory</label>
 <input id="newDirectory" type="text" [(ngModel)]="directoryInputValue"/>
 <button (click)="createDirectory()">Create</button>
+<input name="file" type="file"
+       accept="*"
+       (change)="uploadFileSelected($event)"/>
+
+<p>{{fileLoading}}</p>
+
+<img [attr.src]="filePreviewSrc" alt="hello"/>
