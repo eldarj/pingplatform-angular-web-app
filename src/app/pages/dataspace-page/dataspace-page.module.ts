@@ -5,6 +5,7 @@ import {RouterModule, Routes} from '@angular/router';
 import {MaterialModule} from '../../shared/modules/material/material.module';
 import {CommonSharedModule} from '../../shared/modules/common/common-shared.module';
 import {FilePreviewComponent} from './file-preview/file-preview.component';
+import {SharedComponentsModule} from '../../shared/components/shared-components.module';
 
 const routes: Routes = [
   {path: '', component: DataspacePageComponent},
@@ -23,7 +24,8 @@ const routes: Routes = [
     CommonModule,
     RouterModule.forChild(routes),
     MaterialModule,
-    CommonSharedModule
+    CommonSharedModule,
+    SharedComponentsModule
   ],
   exports: [
     RouterModule

@@ -7,6 +7,7 @@ import {MaterialModule} from '../modules/material/material.module';
 import {MatFormComponent} from './mat-form/mat-form.component';
 import {MatFormInputComponent} from './mat-form/fields/mat-form-input/mat-form-input.component';
 import {MatFormAutocompleteInputComponent} from './mat-form/fields/mat-form-autocomplete-input/mat-form-autocomplete-input.component';
+import {LoaderComponent} from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -14,6 +15,7 @@ import {MatFormAutocompleteInputComponent} from './mat-form/fields/mat-form-auto
     MatFormComponent,
     MatFormInputComponent,
     MatFormAutocompleteInputComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -26,6 +28,7 @@ import {MatFormAutocompleteInputComponent} from './mat-form/fields/mat-form-auto
     MatFormComponent,
     MatFormInputComponent,
     MatFormAutocompleteInputComponent,
+    LoaderComponent,
   ]
 })
 export class SharedComponentsModule { }

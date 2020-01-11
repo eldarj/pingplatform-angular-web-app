@@ -1,10 +1,23 @@
-{{displaySelf}}
-{{loading}}
-<div *ngIf="displaySelf">
-  <div *ngIf="loading">
-    loading...
-  </div>
-  <div *ngIf="!loading">
-    <img [attr.src]="previewObjectUrl" alt="hello"/>
+<div class="file-preview-main-wrapper" [class.fade-in]="displaySelf" *ngIf="displaySelf">
+  <div class="file-preview-inner">
+    <div class="file-preview-toolbar d-flex justify-content-space-between" [class.disabled]="loading">
+      <div class="toolbar-btn-container actions">
+        <div>Hey</div>
+        <div>There</div>
+      </div>
+      <div class="toolbar-btn-container close">
+        <div (click)="displaySelf = false">
+          <i class="fas fa-times"></i>
+        </div>
+      </div>
+    </div>
+    <div class="file-preview-content">
+      <div class="loader-holder" *ngIf="loading">
+        <app-loader [colorClass]="'ping-blue'"></app-loader>
+      </div>
+      <div class="content-holder" *ngIf="!loading">
+        <img [attr.src]="previewObjectUrl"/>
+      </div>
+    </div>
   </div>
 </div>

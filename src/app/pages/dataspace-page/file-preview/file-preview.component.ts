@@ -30,16 +30,20 @@ export class FilePreviewComponent {
     this.loading = true;
 
     // TODO: Remove timeout in production
-    setTimeout(() => {
-      this.dataSpaceService.getFile(this.username, PathUtils.getNodePathToParent(node), node.name).subscribe(response => {
-        const responseFileObjectUrl = URL.createObjectURL(new Blob([response]));
-        node.fileObjectUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(responseFileObjectUrl);
-        this.previewObjectUrl = node.fileObjectUrl;
-        this.loading = false;
-      }, error => {
-        console.log(error);
-        this.snackbarService.openSnackBar(`Couldn\'t load ${node.name}, please try again or contact PING Support.`);
-      });
-    }, 1000);
+    setTimeout(() => this.fetchNode(node), 2000);
+  }
+
+  private fetchNode(node: any) {
+    this.dataSpaceService.getFile(this.username, PathUtils.getNodePathToParent(node), node.name).subscribe(response => {
+      const responseFileObjectUrl = URL.createObjectURL(new Blob([response]));
+      node.fileObjectUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(responseFileObjectUrl);
+      this.previewObjectUrl = node.fileObjectUrl;
+
+      setTimeout(() => this.loading = false, 1000);
+
+    }, error => {
+      console.log(error);
+      this.snackbarService.openSnackBar(`Couldn\'t load ${node.name}, please try again or contact PING Support.`);
+    });
   }
 }
