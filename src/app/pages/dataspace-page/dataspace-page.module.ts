@@ -4,6 +4,7 @@ import {DataspacePageComponent} from './dataspace-page.component';
 import {RouterModule, Routes} from '@angular/router';
 import {MaterialModule} from '../../shared/modules/material/material.module';
 import {CommonSharedModule} from '../../shared/modules/common/common-shared.module';
+import {FilePreviewComponent} from './file-preview/file-preview.component';
 
 const routes: Routes = [
   {path: '', component: DataspacePageComponent},
@@ -16,6 +17,7 @@ const routes: Routes = [
 @NgModule({
   declarations: [
     DataspacePageComponent,
+    FilePreviewComponent,
   ],
   imports: [
     CommonModule,

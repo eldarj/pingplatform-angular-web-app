@@ -1,0 +1,10 @@
+{{displaySelf}}
+{{loading}}
+<div *ngIf="displaySelf">
+  <div *ngIf="loading">
+    loading...
+  </div>
+  <div *ngIf="!loading">
+    <img [attr.src]="previewObjectUrl" alt="hello"/>
+  </div>
+</div>

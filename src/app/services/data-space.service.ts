@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
+import {PathUtils} from '../utils/path.utils';
 
 const DATA_SPACE_ENDPOINT = 'http://localhost:8089/api/data-space/';
 
@@ -18,8 +19,8 @@ export class DataSpaceService {
       .set('path', path);
 
     return this.httpClient.get(DATA_SPACE_ENDPOINT + username + '/file', {
+      responseType: 'arraybuffer',
       params,
-      responseType: 'arraybuffer'
     });
   }
 
@@ -30,7 +31,7 @@ export class DataSpaceService {
     return this.httpClient.get(DATA_SPACE_ENDPOINT + username, {params});
   }
 
-  public createNewDirectory(username: string, path: string, tname: string)/*: Observable<any>*/ {
+  public createNewDirectory(username: string, path: string, name: string)/*: Observable<any>*/ {
     const newDirectory = {name, path, shared: false};
 
     return this.httpClient.post(DATA_SPACE_ENDPOINT + username + '/directory', newDirectory);

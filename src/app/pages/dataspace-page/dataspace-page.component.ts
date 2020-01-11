@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, ViewChild} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {DataSpaceService} from '../../services/data-space.service';
 import {Location} from '@angular/common';
@@ -6,6 +6,8 @@ import {AuthenticationService} from '../../services/authentication.service';
 import {SnackbarService} from '../../services/snackbar.service';
 import {MatDialog} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
+import {FilePreviewComponent} from './file-preview/file-preview.component';
+import {PathUtils} from '../../utils/path.utils';
 
 @Component({
   selector: 'app-dataspace-page',
@@ -13,19 +15,21 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./dataspace-page.component.scss']
 })
 export class DataspacePageComponent {
+  @ViewChild(FilePreviewComponent, {static: false})
+  private filePreview: FilePreviewComponent;
+
   username: string;
 
   node: any = {};
   childNodes: any[];
 
-  fileLoading = false;
-  previewObjectUrl = null;
   displayBack = false;
   directoryInputValue = '';
 
   constructor(private dialog: MatDialog,
               private domSanitizer: DomSanitizer,
-              private location: Location, private route: ActivatedRoute,
+              private location: Location,
+              private route: ActivatedRoute,
               private dataSpaceService: DataSpaceService,
               private authenticationService: AuthenticationService,
               private snackbarService: SnackbarService) {
@@ -50,16 +54,12 @@ export class DataspacePageComponent {
     }
   }
 
-  get filePreviewSrc() {
-    return this.domSanitizer.bypassSecurityTrustResourceUrl(this.previewObjectUrl);
-  }
-
   back() {
     this.getNodes(this.node.parentNode);
   }
 
   uploadFileSelected(event: any) {
-    this.dataSpaceService.uploadFile(this.username, this.getPath(this.node), this.prepareFormData(event)).subscribe(result => {
+    this.dataSpaceService.uploadFile(this.username, PathUtils.getNodePath(this.node), this.prepareFormData(event)).subscribe(result => {
       console.log(result);
       this.childNodes.push(result.node);
       this.snackbarService.openSnackBar('Successfully uploaded file.');
@@ -67,41 +67,20 @@ export class DataspacePageComponent {
   }
 
   getNodes(node: any) {
-    this.location.go('/dataspace/' + this.getPath(node));
-    this.fetchNodes(this.getPath(node));
+    this.location.go('/dataspace/' + PathUtils.getNodePath(node));
+    this.fetchNodes(PathUtils.getNodePath(node));
   }
 
   getFile(node: any) {
-    this.fileLoading = true;
-    this.dataSpaceService.getFile(this.username, this.getPath(this.node), node.name).subscribe(response => {
-      setTimeout(
-        () => {
-          node.fileObjectUrl = URL.createObjectURL(new Blob([response]));
-          this.previewObjectUrl = node.fileObjectUrl;
-          this.fileLoading = false;
-        },
-        1000
-      );
-    }, error => {
-      this.snackbarService.openSnackBar(`Couldn\'t load ${node.name}, please try again or contact PING Support.`);
-    });
+    this.filePreview.display(node);
   }
 
   createDirectory() {
-    this.dataSpaceService.createNewDirectory(this.username, this.getPath(this.node), this.directoryInputValue)
+    this.dataSpaceService.createNewDirectory(this.username, PathUtils.getNodePath(this.node), this.directoryInputValue)
       .subscribe((result: { node }) => {
         this.childNodes.push(result.node);
         this.snackbarService.openSnackBar('Successfully created new directory.');
       }, console.log);
-  }
-
-  private getPath(node: any) {
-    let path = '';
-    if (node.path !== '') {
-      path += node.path + '/';
-    }
-    path += node.name;
-    return path;
   }
 
   private prepareFormData(event: any) {
