@@ -9,7 +9,8 @@ import {SharedComponentsModule} from '../../shared/components/shared-components.
 
 const routes: Routes = [
   {path: '', component: DataspacePageComponent},
-  {path: ':username', component: DataspacePageComponent, children: [{
+  {
+    path: ':username', component: DataspacePageComponent, children: [{
       path: '**', component: DataspacePageComponent
     }]
   },
@@ -30,8 +31,7 @@ const routes: Routes = [
   exports: [
     RouterModule
   ],
-  entryComponents: [
-  ]
+  entryComponents: []
 })
 export class DataspacePageModule {
 }

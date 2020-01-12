@@ -1,12 +1,44 @@
 <div>{{node.name}}</div>
 <div (click)="back()" *ngIf="displayBack">Back</div>
-<ul>
-  <li *ngFor="let node of childNodes">
-    <span (click)="node.directory ? getNodes(node) : getFile(node)">{{node.name}} - {{node.sizeInHuman}}
-    - {{node.mimeType}} - Shared: {{node.public}} - Directory: {{node.directory}} - Deleted: {{node.deleted}}</span>
-    <span (click)="delete(node)">Delete</span>
-  </li>
-</ul>
+<div class="data-space-table-wrapper">
+  <div class="data-space-table-inner">
+    <div class="table-head">
+      <div class="table-head-row table-row">
+        <div class="type-icon"></div>
+        <div class="name-wrap">Name</div>
+        <div class="size">Size</div>
+        <div class="shared-with">Shared with</div>
+        <div class="actions"><i class="fas fa-ellipsis-h"></i></div>
+      </div>
+    </div>
+    <div class="table-body">
+      <div class="table-body-row table-row" *ngFor="let node of childNodes">
+        <div class="type-icon">
+          <span class="icon">[X]</span>
+          <span class="tooltip">{{node.directory ? 'Directory' : node.mimeType}}</span>
+        </div>
+        <div class="name-wrap">
+          <div class="name">
+            <span (click)="node.directory ? getNodes(node) : getFile(node)">{{node.name}}</span>
+          </div>
+          <div class="icon-links">
+            <span class="access">
+              <i class="fas" [ngClass]="node.public ? 'fa-eye color-ping-blue' : 'fa-eye-slash'"></i>
+            </span>
+          </div>
+        </div>
+        <div class="size">{{node.directory ? 'Directory' : node.sizeInHuman}}</div>
+        <div class="shared-with">-</div>
+        <div class="actions">
+          <span><i class="fas fa-ellipsis-v"></i></span>
+          <span><i class="fas fa-share-alt"></i></span>
+          <span class="btn btn-delete" (click)="delete(node)"><i class="fas fa-trash-alt"></i></span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <label for="newDirectory">New directory</label>
 <input id="newDirectory" type="text" [(ngModel)]="directoryInputValue"/>
 <button (click)="createDirectory()">Create</button>
