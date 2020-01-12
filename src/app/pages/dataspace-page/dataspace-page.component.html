@@ -3,7 +3,7 @@
 <ul>
   <li *ngFor="let node of childNodes">
     <span (click)="node.asDirectory ? getNodes(node) : getFile(node)">{{node.name}} - {{node.sizeInHuman}}
-    - {{node.mimeType}}</span>
+    - {{node.mimeType}} - Shared: {{node.public}} - Directory: {{node.directory}}</span>
   </li>
 </ul>
 <label for="newDirectory">New directory</label>

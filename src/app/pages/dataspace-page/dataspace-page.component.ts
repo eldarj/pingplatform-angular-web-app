@@ -61,7 +61,7 @@ export class DataspacePageComponent {
 
   uploadFileSelected(event: any) {
     this.dataSpaceService.uploadFile(this.username, PathUtils.getNodePath(this.node), this.prepareFormData(event)).subscribe(result => {
-      console.warn(result);
+      console.log(result);
       this.childNodes.push(...result.nodes);
       this.snackbarService.openSnackBar('Successfully uploaded file.');
     }, console.warn);
@@ -97,6 +97,7 @@ export class DataspacePageComponent {
   private fetchNodes(path: string) {
     this.dataSpaceService.getNodes(this.username, path).subscribe(result => {
       this.node = result.node;
+      console.log(result.childNodes);
       this.childNodes = result.childNodes;
       this.displayBack = this.node.path !== '';
 
