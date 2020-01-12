@@ -43,17 +43,41 @@
       background: #141518;
 
       .content-holder {
-        max-width: 95%;
-        max-height: 95%;
         margin: auto;
         display: flex;
         justify-content: center;
         align-items: center;
 
         > * {
-          max-width: inherit;
-          max-height: inherit;
+          max-width: calc(100vw - 150px);
+          max-height: calc(100vh - 150px);
           box-shadow: 1px 1px 10px 1.5px rgba(0, 0, 0, .25);
+        }
+
+
+        .video-wrapper {
+          video {
+            max-width: inherit;
+            width: inherit;
+            outline: none;
+          }
+        }
+
+        .audio-wrapper {
+          &.ping-poster {
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 35px;
+            border-radius: 30px;
+
+            audio {
+              outline: none;
+              margin: 0 5px 5px 5px;
+            }
+          }
         }
       }
     }

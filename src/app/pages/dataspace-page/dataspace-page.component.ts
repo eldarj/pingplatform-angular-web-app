@@ -8,6 +8,7 @@ import {MatDialog} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {FilePreviewComponent} from './file-preview/file-preview.component';
 import {PathUtils} from '../../utils/path.utils';
+import {FileUploadOverwriteComponent} from '../data-space-page/dialogs/file-upload-overwrite/file-upload-overwrite.component';
 
 @Component({
   selector: 'app-dataspace-page',
@@ -61,7 +62,7 @@ export class DataspacePageComponent {
   uploadFileSelected(event: any) {
     this.dataSpaceService.uploadFile(this.username, PathUtils.getNodePath(this.node), this.prepareFormData(event)).subscribe(result => {
       console.log(result);
-      this.childNodes.push(result.node);
+      this.childNodes.push(...result.nodes);
       this.snackbarService.openSnackBar('Successfully uploaded file.');
     }, console.log);
   }
@@ -87,7 +88,7 @@ export class DataspacePageComponent {
     const formData = new FormData();
 
     Array.from<File>(event.target.files).forEach(file => {
-      formData.append('multipartFile', file, file.name);
+      formData.append('files', file, file.name);
     });
 
     return formData;

@@ -12,11 +12,15 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./file-preview.component.scss']
 })
 export class FilePreviewComponent {
-  previewObjectUrl = null;
+  node = null;
   displaySelf = false;
   loading = true;
 
   username: string;
+
+  isImage = false;
+  isAudio = false;
+  isVideo = false;
 
   constructor(private dataSpaceService: DataSpaceService,
               private snackbarService: SnackbarService,
@@ -28,27 +32,31 @@ export class FilePreviewComponent {
   display(node: any) {
     this.displaySelf = true;
     this.loading = true;
+    this.node = node;
 
-    if (node.fileObjectUrl !== null && node.fileObjectUrl !== undefined) {
-      this.setObjectUrl(node.fileObjectUrl);
-    } else {
+    this.resolveType();
+
+    if (this.node.fileObjectUrl === null || this.node.fileObjectUrl === undefined) {
       // TODO: Remove timeout in production
       setTimeout(() => {
-        this.dataSpaceService.getFile(this.username, PathUtils.getNodePathToParent(node), node.name).subscribe(response => {
+        this.dataSpaceService.getFile(this.username, PathUtils.getNodePathToParent(this.node), this.node.name).subscribe(response => {
           const responseFileObjectUrl = URL.createObjectURL(new Blob([response]));
-          node.fileObjectUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(responseFileObjectUrl);
-          this.setObjectUrl(node.fileObjectUrl);
+          this.node.fileObjectUrl = this.domSanitizer.bypassSecurityTrustResourceUrl(responseFileObjectUrl);
+          this.loading = false;
 
         }, error => {
           console.log(error);
-          this.snackbarService.openSnackBar(`Couldn\'t load ${node.name}, please try again or contact PING Support.`);
+          this.snackbarService.openSnackBar(`Couldn\'t load ${this.node.name}, please try again or contact PING Support.`);
         });
       }, 2000);
+    } else {
+      this.loading = false;
     }
   }
 
-  private setObjectUrl(fileObjectUrl: any) {
-    this.previewObjectUrl = fileObjectUrl;
-    this.loading = false;
+  private resolveType() {
+    this.isImage = this.node.mimeType.includes('image');
+    this.isAudio = this.node.mimeType.includes('audio');
+    this.isVideo = this.node.mimeType.includes('video');
   }
 }
