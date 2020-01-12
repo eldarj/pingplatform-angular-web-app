@@ -1,7 +1,6 @@
 import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {HttpClient, HttpParams} from '@angular/common/http';
-import {PathUtils} from '../utils/path.utils';
 
 const DATA_SPACE_ENDPOINT = 'http://localhost:8089/api/data-space/';
 
@@ -24,12 +23,12 @@ export class DataSpaceService {
     });
   }
 
-  public deleteFile(username: string, path: string, filename: string): Observable<any> {
+  public deleteNodes(username: string, path: string, commaSeparatedNodeNames: string): Observable<any> {
     const params = new HttpParams()
-      .set('filenames', filename)
+      .set('nodeNames', commaSeparatedNodeNames)
       .set('path', path);
 
-    return this.httpClient.delete(DATA_SPACE_ENDPOINT + username + '/files', {
+    return this.httpClient.delete(DATA_SPACE_ENDPOINT + username, {
       params
     });
   }

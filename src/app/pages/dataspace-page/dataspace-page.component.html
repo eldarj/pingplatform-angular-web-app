@@ -2,8 +2,9 @@
 <div (click)="back()" *ngIf="displayBack">Back</div>
 <ul>
   <li *ngFor="let node of childNodes">
-    <span (click)="node.asDirectory ? getNodes(node) : getFile(node)">{{node.name}} - {{node.sizeInHuman}}
-    - {{node.mimeType}} - Shared: {{node.public}} - Directory: {{node.directory}}</span>
+    <span (click)="node.directory ? getNodes(node) : getFile(node)">{{node.name}} - {{node.sizeInHuman}}
+    - {{node.mimeType}} - Shared: {{node.public}} - Directory: {{node.directory}} - Deleted: {{node.deleted}}</span>
+    <span (click)="delete(node)">Delete</span>
   </li>
 </ul>
 <label for="newDirectory">New directory</label>
@@ -12,4 +13,4 @@
 <input name="file" type="file" accept="*" multiple
        (change)="uploadFileSelected($event)"/>
 
-<app-file-preview></app-file-preview>
+<app-file-preview (deleteEmitter)="onDelete($event)"></app-file-preview>

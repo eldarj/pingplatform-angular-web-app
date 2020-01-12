@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, EventEmitter, Output} from '@angular/core';
 import {DataSpaceService} from '../../../services/data-space.service';
 import {PathUtils} from '../../../utils/path.utils';
 import {SnackbarService} from '../../../services/snackbar.service';
@@ -12,6 +12,8 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./file-preview.component.scss']
 })
 export class FilePreviewComponent {
+  @Output() deleteEmitter: EventEmitter<any> = new EventEmitter<any>();
+
   node = null;
   displaySelf = false;
   loading = true;
@@ -56,20 +58,14 @@ export class FilePreviewComponent {
   }
 
   delete() {
-    this.dataSpaceService.deleteFile(this.username, PathUtils.getNodePathToParent(this.node), this.node.name).subscribe(response => {
-      console.log(response);
-      let responseMsg = '';
-      if (response.nodes.length > 1) {
-        responseMsg = `${response.nodes.length} files`;
-      } else {
-        responseMsg = response.nodes[0].name;
-      }
-      this.snackbarService.openSnackBar(`Successfully deleted ${responseMsg}.`);
-
-    }, error => {
-      console.warn(error);
-      this.snackbarService.openSnackBar(`Something went wrong, couldn\'t delete files.`);
-    });
+    this.dataSpaceService.deleteNodes(this.username, PathUtils.getNodePathToParent(this.node), this.node.name)
+      .subscribe(
+        response => {
+          this.deleteEmitter.emit(response);
+          this.displaySelf = false;
+        },
+        error => this.deleteEmitter.emit(error)
+      );
   }
 
   private resolveType() {

@@ -8,7 +8,6 @@ import {MatDialog} from '@angular/material';
 import {DomSanitizer} from '@angular/platform-browser';
 import {FilePreviewComponent} from './file-preview/file-preview.component';
 import {PathUtils} from '../../utils/path.utils';
-import {FileUploadOverwriteComponent} from '../data-space-page/dialogs/file-upload-overwrite/file-upload-overwrite.component';
 
 @Component({
   selector: 'app-dataspace-page',
@@ -84,6 +83,32 @@ export class DataspacePageComponent {
       }, console.warn);
   }
 
+  delete(node: any) {
+    this.dataSpaceService.deleteNodes(this.username, PathUtils.getNodePathToParent(node), node.name)
+      .subscribe(response => this.onDelete(response), error => this.onDelete(error));
+  }
+
+  private onDelete(response) {
+    if (response.nodes !== null && response.nodes !== undefined) {
+      let responseMsg = '';
+      if (response.nodes.length > 1) {
+        responseMsg = `${response.nodes.length} files`;
+        this.childNodes = this.childNodes.filter(node => response.nodes.find(
+          deletedNode => deletedNode.id !== node.id
+        ));
+
+      } else {
+        responseMsg = response.nodes[0].name;
+        this.childNodes = this.childNodes.filter(node => node.id !== response.nodes[0].id);
+      }
+      this.snackbarService.openSnackBar(`Successfully deleted ${responseMsg}.`);
+
+    } else {
+      console.warn(response);
+      this.snackbarService.openSnackBar(`Something went wrong, couldn\'t delete files.`);
+    }
+  }
+
   private prepareFormData(event: any) {
     const formData = new FormData();
 
@@ -97,6 +122,7 @@ export class DataspacePageComponent {
   private fetchNodes(path: string) {
     this.dataSpaceService.getNodes(this.username, path).subscribe(result => {
       this.node = result.node;
+      console.log(result.node);
       console.log(result.childNodes);
       this.childNodes = result.childNodes;
       this.displayBack = this.node.path !== '';
