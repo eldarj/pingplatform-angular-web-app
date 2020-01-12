@@ -24,6 +24,16 @@ export class DataSpaceService {
     });
   }
 
+  public deleteFile(username: string, path: string, filename: string): Observable<any> {
+    const params = new HttpParams()
+      .set('filenames', filename)
+      .set('path', path);
+
+    return this.httpClient.delete(DATA_SPACE_ENDPOINT + username + '/files', {
+      params
+    });
+  }
+
   public getNodes(username: string, path: string): Observable<any> {
     const params = new HttpParams()
       .set('path', path);

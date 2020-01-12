@@ -55,6 +55,23 @@ export class FilePreviewComponent {
     }
   }
 
+  delete() {
+    this.dataSpaceService.deleteFile(this.username, PathUtils.getNodePathToParent(this.node), this.node.name).subscribe(response => {
+      console.log(response);
+      let responseMsg = '';
+      if (response.nodes.length > 1) {
+        responseMsg = `${response.nodes.length} files`;
+      } else {
+        responseMsg = response.nodes[0].name;
+      }
+      this.snackbarService.openSnackBar(`Successfully deleted ${responseMsg}.`);
+
+    }, error => {
+      console.warn(error);
+      this.snackbarService.openSnackBar(`Something went wrong, couldn\'t delete files.`);
+    });
+  }
+
   private resolveType() {
     this.isImage = this.node.mimeType.includes('image');
     this.isAudio = this.node.mimeType.includes('audio');
