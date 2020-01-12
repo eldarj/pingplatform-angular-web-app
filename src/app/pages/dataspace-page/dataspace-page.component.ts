@@ -48,7 +48,7 @@ export class DataspacePageComponent {
         this.location.go('/dataspace/' + this.username);
         this.fetchNodes(this.username);
 
-      }, console.log);
+      }, console.warn);
 
     } else {
       this.fetchNodes(this.username + (path !== null ? '/' + path : ''));
@@ -61,10 +61,10 @@ export class DataspacePageComponent {
 
   uploadFileSelected(event: any) {
     this.dataSpaceService.uploadFile(this.username, PathUtils.getNodePath(this.node), this.prepareFormData(event)).subscribe(result => {
-      console.log(result);
+      console.warn(result);
       this.childNodes.push(...result.nodes);
       this.snackbarService.openSnackBar('Successfully uploaded file.');
-    }, console.log);
+    }, console.warn);
   }
 
   getNodes(node: any) {
@@ -81,7 +81,7 @@ export class DataspacePageComponent {
       .subscribe((result: { node }) => {
         this.childNodes.push(result.node);
         this.snackbarService.openSnackBar('Successfully created new directory.');
-      }, console.log);
+      }, console.warn);
   }
 
   private prepareFormData(event: any) {
@@ -100,6 +100,6 @@ export class DataspacePageComponent {
       this.childNodes = result.childNodes;
       this.displayBack = this.node.path !== '';
 
-    }, console.log);
+    }, console.warn);
   }
 }

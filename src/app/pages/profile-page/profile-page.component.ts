@@ -35,7 +35,7 @@ export class ProfilePageComponent {
         if (this.userAccount.coverPath) {
           this.coverSrc = 'http://localhost:8089/dataspace-static/' + this.userAccount.coverPath;
         }
-      }, console.log);
+      }, console.warn);
     }
   }
 
@@ -44,7 +44,7 @@ export class ProfilePageComponent {
       if (result.node.path && result.node.name) {
         this.coverSrc = 'http://localhost:8089/dataspace-static/' + result.node.path + '/' + result.node.name;
       }
-    }, console.log);
+    }, console.warn);
   }
 
   public avatarUploadFileSelected(event: any) {
@@ -52,7 +52,7 @@ export class ProfilePageComponent {
       if (result.node.path && result.node.name) {
         this.profileSrc = 'http://localhost:8089/dataspace-static/' + result.node.path + '/' + result.node.name;
       }
-    }, console.log);
+    }, console.warn);
   }
 
   private prepareFormData(event: any) {

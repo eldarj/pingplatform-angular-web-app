@@ -41,8 +41,6 @@ export class DataSpaceService {
     const params = new HttpParams()
       .set('path', path);
 
-    console.log(path);
-
     return this.httpClient.post(DATA_SPACE_ENDPOINT + username + '/files', formData, {params});
   }
 }

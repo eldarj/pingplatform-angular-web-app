@@ -35,7 +35,6 @@ export class AuthenticationService {
       {observe: 'response'}
     ).pipe(map(
       (response: any) => {
-        console.log(response);
         if (response != null) {
           const expiresInDays = 30;
           console.log(response.body.token);

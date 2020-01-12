@@ -50,7 +50,7 @@ export class FilePreviewDialogComponent {
               1000
             );
           },
-          error => console.log(error)
+          console.warn
         );
     }
   }

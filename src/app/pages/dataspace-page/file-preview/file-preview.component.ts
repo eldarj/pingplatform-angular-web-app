@@ -45,7 +45,7 @@ export class FilePreviewComponent {
           this.loading = false;
 
         }, error => {
-          console.log(error);
+          console.warn(error);
           this.snackbarService.openSnackBar(`Couldn\'t load ${this.node.name}, please try again or contact PING Support.`);
         });
       }, 2000);

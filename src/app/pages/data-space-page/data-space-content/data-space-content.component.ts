@@ -54,9 +54,6 @@ export class DataSpaceContentComponent {
     const username = this.route.snapshot.paramMap.get('username');
     const path = this.route.snapshot.paramMap.get('path');
 
-    console.log(username);
-    console.log(path);
-
     this.dataSpaceDataService.emitter.subscribe(event => {
       switch (event) {
         case 'DeleteMultipleNodes': {

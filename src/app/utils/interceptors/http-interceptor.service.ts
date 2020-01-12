@@ -28,7 +28,7 @@ export class HttpInterceptorService implements HttpInterceptor {
         return response;
       }, console.error),
       catchError((error: HttpErrorResponse) => {
-        console.log(error);
+        console.warn(error);
         if (!!error.error.reason) {
           this.snackbarService.openSnackBar(error.error.reason);
         } else {
