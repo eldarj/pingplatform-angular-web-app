@@ -43,39 +43,64 @@
       background: rgba(13, 14, 15, .95);
 
       .content-holder {
-        margin: auto;
-        display: flex;
-        justify-content: center;
-        align-items: center;
+        box-shadow : 0 0 10px 0 rgba(0, 0, 0, .5);
+        overflow: hidden;
 
-        > * {
-          max-width: calc(100vw - 150px);
-          max-height: calc(100vh - 150px);
-          box-shadow: 1px 1px 10px 1.5px rgba(0, 0, 0, .25);
-        }
+        .details {
+          color: #EEE;
+          font-size: 13px;
+          padding: 5px;
+          box-sizing: border-box;
 
+          display: flex;
+          justify-content: space-between;
+          max-width: 100%;
+          width: 100%;
 
-        .video-wrapper {
-          video {
-            max-width: inherit;
-            width: inherit;
-            outline: none;
+          box-shadow: 0 -2.5px 10px 0 rgb(0,0,0,.25);
+          position: relative;
+
+          &.image-details {
+          }
+          &.audio-details {
+            max-width: 310px;
+            box-shadow: none;
+          }
+          &.video-details {
+            max-width: 600px; //TODO: resolve width to contain video dynamically with css
           }
         }
 
-        .audio-wrapper {
-          &.ping-poster {
-            height: 300px;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end;
-            align-items: center;
-            margin-bottom: 35px;
-            border-radius: 30px;
+        .content {
+          > * {
+            display: block;
+            max-width: calc(100vw - 150px);
+            max-height: calc(100vh - 150px);
+          }
 
-            audio {
+          .video-wrapper {
+            video {
+              max-width: inherit;
+              width: inherit;
               outline: none;
-              margin: 0 5px 5px 5px;
+              display: block;
+            }
+          }
+
+          .audio-wrapper {
+            &.ping-poster {
+              height: 300px;
+              display: flex;
+              flex-direction: column;
+              justify-content: flex-end;
+              align-items: center;
+              margin-bottom: 5px;
+              border-radius: 30px;
+
+              audio {
+                outline: none;
+                margin: 0 5px 5px 5px;
+              }
             }
           }
         }

@@ -21,6 +21,7 @@ export class FilePreviewComponent {
   isImage = false;
   isAudio = false;
   isVideo = false;
+  detailsHolderClassname = '';
 
   constructor(private dataSpaceService: DataSpaceService,
               private snackbarService: SnackbarService,
@@ -58,5 +59,6 @@ export class FilePreviewComponent {
     this.isImage = this.node.mimeType.includes('image');
     this.isAudio = this.node.mimeType.includes('audio');
     this.isVideo = this.node.mimeType.includes('video');
+    this.detailsHolderClassname = this.isImage ? 'image-details' : this.isAudio ? 'audio-details' : 'video-details';
   }
 }
